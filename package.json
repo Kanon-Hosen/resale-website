@@ -9,6 +9,7 @@
     "daisyui": "^2.41.0",
     "firebase": "^9.14.0",
     "react": "^18.2.0",
+    "react-icons": "^4.6.0",
     "react-router-dom": "^6.4.3",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
@@ -33,7 +34,21 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.13",
+    "eslint": "^8.28.0",
     "postcss": "^8.4.19",
     "tailwindcss": "^3.2.4"
-  }
+  },
+  "main": "postcss.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/programming-hero-web-course-4/b612-used-products-resale-clients-side-Kanon-Hosen.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/programming-hero-web-course-4/b612-used-products-resale-clients-side-Kanon-Hosen/issues"
+  },
+  "homepage": "https://github.com/programming-hero-web-course-4/b612-used-products-resale-clients-side-Kanon-Hosen#readme",
+  "description": ""
 }

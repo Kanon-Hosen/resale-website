@@ -8,7 +8,7 @@ import React, { useState } from "react";
 import { BsGoogle } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../Config/Firebase";
-// import toast from 'react-hot-toast';
+import toast from 'react-hot-toast';
 const Register = () => {
   document.title = "Register";
   const url =
@@ -23,10 +23,11 @@ const Register = () => {
     const name = e.target.name.value;
     const email = e.target.email.value;
     const image = e.target.file.files[0];
+    const acocunt = e.target.account.value;
     const formData = new FormData();
     formData.append("image", image);
     const password = e.target.password.value;
-    const user = { username: name, email };
+      const user = { username: name, email, accountType: acocunt };
     fetch(url, {
       method: "post",
       body: formData,
@@ -50,7 +51,7 @@ const Register = () => {
                 body: JSON.stringify(user),
               }).then(() => {});
               navigate("/");
-              // toast.success('Register Successfully');
+              toast.success('Register Successfully');
             });
           })
           .catch((err) => {
@@ -134,12 +135,12 @@ const Register = () => {
               <label className="label">
                 <span className="label-text">Select account type</span>
               </label>
-              <select className="select select-bordered">
+              <select required name="account" className="select select-bordered">
                 <option disabled selected>
                   Pick one
                 </option>
-                <option>Buyer</option>
-                <option>Seller</option>
+                <option value='Buyer'>Buyer</option>
+                <option value='Seller'>Seller</option>
               </select>
             </div>
             <p>{error}</p>

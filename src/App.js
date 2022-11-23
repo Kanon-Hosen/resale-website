@@ -1,10 +1,14 @@
 import './App.css';
-import MainRoutes from './MainRoute/MainRoute'
+import MainRoutes from './MainRoute/MainRoute';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
 function App() {
+  const queryClient = new QueryClient()
+
   return (
-    <div >
+    <QueryClientProvider client={queryClient}>
       <MainRoutes></MainRoutes>
-    </div>
+    </QueryClientProvider>
   );
 }
 

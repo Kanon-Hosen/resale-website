@@ -28,7 +28,7 @@ const Navbar = () => {
     </ul>
   </div>
   <div className="navbar-end">
-    <Link className=" px-5 py-2 btn-primary text-white">Login</Link>
+    <Link to='/login' className=" px-5 py-2 btn-primary text-white">Login</Link>
   </div>
 </div>
     );

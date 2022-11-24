@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { createFactory } from "react";
+import React from "react";
 import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import toast from "react-hot-toast";
@@ -20,7 +20,7 @@ const Category = () => {
       return data;
     },
   });
-  console.log("🚀 ~ file: Category.js ~ line 15 ~ Category ~ carCta", carCta);
+
   if (isFetching || isLoading) {
     return <Sppiner></Sppiner>;
   }
@@ -30,7 +30,9 @@ const Category = () => {
         No Item Available
       </div>
     );
-    }
+  }
+  
+
     // ? Bookin handle:::::::::::::::::::::::::::::
     const handleBooking = (e) => {
         e.preventDefault();
@@ -39,22 +41,31 @@ const Category = () => {
         const sellerEmail = carDetails.email;
         const buyerName = user?.displayName;
         const sellerName = carDetails?.name;
+        const sellerPic = carDetails?.userImg;
+        const sellerNumber = carDetails?.phone;
         const price = carDetails?.reSellPrice;
         const meetingLocation = e.target.meetingLocation.value;
         const buyerPhone = e.target.phoneNumber.value;
         const carName = carDetails.carName;
+        const carImage = carDetails.image;
 
-        const bookDetails = { buyerEmail, buyerPic, buyerPhone, buyerName, sellerName, sellerEmail, price, meetingLocation, carName };
+      const bookDetails = { buyerEmail, buyerPic, buyerPhone, buyerName, sellerName, sellerEmail, sellerPic, sellerNumber, price, meetingLocation, carName, carImage };
 
-        fetch('http://localhost:5000/booknow', {
+        fetch(`http://localhost:5000/booknow?name=${carName}`, {
             method: "POST",
             headers: {
                 "content-type":"application/json"
             },
             body:JSON.stringify(bookDetails)
-        }).then(() => {
-            toast.success("Book Successfully");
+        }).then((res) => {
+          res.json();
+        }).then(data => {
+          if (!data) {
             setCarDetails(null)
+            return toast.error("Already booked this car. Please check you order list")
+          }
+          toast.success("Book Successfully");
+          setCarDetails(null)
         })
 
 
@@ -62,7 +73,7 @@ const Category = () => {
   return (
     <div className="px-16 my-6 h-screen">
       <h1 className="text-3xl font-semibold text-slate-800">{name}</h1>
-      <div className="grid grid-cols-3 mt-8">
+      <div className="grid grid-cols-3 mt-8 gap-7">
         {carCta.map((car) => (
           <div className="shadow-md shadow-blue-100 rounded-md backdrop-blur-lg p-3">
             <div className="w-full relative">
@@ -115,16 +126,11 @@ const Category = () => {
             <label
               onClick={() => setCarDetails(car)}
               htmlFor="my-modal-3"
-              className="absolute bottom-4 right-4 px-5 py-3 bg-blue-400 shadow-lg text-white font-semibold shadow-blue-500 rounded-tr-3xl rounded-bl-3xl hover:-translate-x-4 transition-transform border-none"
+              className={` absolute bottom-4 cursor-pointer right-4 px-5 py-3 bg-blue-400 shadow-lg text-white font-semibold shadow-blue-500 rounded-tr-3xl rounded-bl-3xl hover:-translate-x-4 transition-transform border-none`}
             >
               Book Now
             </label>
-            {/* The button to open modal */}
-            {/* <label htmlFor="my-modal-3" className="btn">
-              open modal
-            </label> */}
 
-            {/* Put this part before </body> tag */}
           </div>
         ))}
         {carDetails && (

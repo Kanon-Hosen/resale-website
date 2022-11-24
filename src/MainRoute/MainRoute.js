@@ -11,6 +11,7 @@ import Services from '../Pages/Services';
 import MyCar from '../DashboardPages/MyCar';
 import Orders from '../DashboardPages/Orders';
 import AddCar from '../DashboardPages/AddCar';
+import MyOrder from '../DashboardPages/MyOrder';
 const MainRoutes = () => {
     const router = createBrowserRouter([
         {
@@ -52,7 +53,11 @@ const MainRoutes = () => {
                         {
                             path: '/dashboard/addcar',
                             element:<AddCar></AddCar>
-                        }
+                        },
+                        {
+                            path: '/dashboard/myorder',
+                            element:<MyOrder></MyOrder>
+                        },
                     ]
                 },
                 {

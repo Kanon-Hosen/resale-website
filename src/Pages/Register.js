@@ -43,15 +43,17 @@ const Register = () => {
             }).then(() => {
               e.target.reset();
               setLoading(false);
-              fetch("http://localhost:4000/users", {
+              fetch("http://localhost:5000/users", {
                 method: "POST",
                 headers: {
                   "content-type": "application/json",
                 },
                 body: JSON.stringify(user),
-              }).then(() => {});
-              navigate("/");
-              toast.success('Register Successfully');
+              }).then(() => {
+                navigate("/");
+                toast.success('Register Successfully');
+              });
+         
             });
           })
           .catch((err) => {

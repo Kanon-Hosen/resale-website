@@ -12,6 +12,10 @@ import MyCar from '../DashboardPages/MyCar';
 import Orders from '../DashboardPages/Orders';
 import AddCar from '../DashboardPages/AddCar';
 import MyOrder from '../DashboardPages/MyOrder';
+import MyBuyer from '../DashboardPages/MyBuyer';
+import PrivateRoute from '../Private/PrivateRoute';
+import AllBuyers from '../DashboardPages/AllBuyers';
+import AllSellers from '../DashboardPages/AllSellers';
 const MainRoutes = () => {
     const router = createBrowserRouter([
         {
@@ -40,7 +44,7 @@ const MainRoutes = () => {
                 },
                 {
                     path: '/dashboard',
-                    element: <Dashboard></Dashboard>,
+                    element: <PrivateRoute><Dashboard></Dashboard></PrivateRoute>,
                     children: [
                         {
                             path: '/dashboard/mycar',
@@ -58,11 +62,23 @@ const MainRoutes = () => {
                             path: '/dashboard/myorder',
                             element:<MyOrder></MyOrder>
                         },
+                        {
+                            path: '/dashboard/mybuyer',
+                            element:<MyBuyer></MyBuyer>
+                        },
+                        {
+                            path: '/dashboard/allsellers',
+                            element:<AllSellers></AllSellers>
+                        },
+                        {
+                            path: '/dashboard/allbuyers',
+                            element:<AllBuyers></AllBuyers>
+                        },
                     ]
                 },
                 {
                     path: '/category/:name',
-                    element:<Category></Category>
+                    element:<PrivateRoute><Category></Category></PrivateRoute>
                 }
             ]
         }

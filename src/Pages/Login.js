@@ -9,7 +9,7 @@ const Login = () => {
     const [error, setError] = useState();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   
     const handleLogin = (e) => {
       setLoading(true);
@@ -22,18 +22,19 @@ const Login = () => {
           setLoading(false);
           e.target.reset();
           const currentUser = { email: email };
-          fetch("http://localhost:4000/jwt", {
-            method: "POST",
-            headers: {
-              "content-type": "application/json",
-            },
-            body: JSON.stringify(currentUser),
-          }).then(res => res.json())
-            .then((data) => {
-              localStorage.setItem("Token", data.token);
+          // fetch("http://localhost:4000/jwt", {
+          //   method: "POST",
+          //   headers: {
+          //     "content-type": "application/json",
+          //   },
+          //   body: JSON.stringify(currentUser),
+          // }).then(res => res.json())
+          //   .then((data) => {
+          //     localStorage.setItem("Token", data.token);
+
+          //   })
           navigate(from, { replace: true });
 
-            })
           
         })
         .catch((err) => {

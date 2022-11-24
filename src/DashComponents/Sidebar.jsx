@@ -55,7 +55,12 @@ const Sidebar = () => {
         <div className="drawer-side ">
           <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
           <ul className="menu p-4 w-80 text-base-content ">
-            {Mainuser?.accountType === "Seller" ? (
+            {
+              Mainuser?.role === 'admin' ? <ul>
+              <li><Link to='/dashboard/allsellers'>All sellers</Link></li>
+              <li><Link to='/dashboard/allbuyers'>All Buyers</Link></li>
+              </ul> : <ul>
+              {Mainuser?.accountType === "Seller" ? (
               <ul>
                 <li>
                   <Link to="/dashboard/mycar">All Car</Link>
@@ -64,7 +69,10 @@ const Sidebar = () => {
                   <Link to="/dashboard/addcar">Add Car</Link>
                 </li>
                 <li>
-                  <Link to="/dashboard/myorder">My Order</Link>
+                  <Link to="/dashboard/myorder">All Orders</Link>
+                </li>
+                <li>
+                  <Link to="/dashboard/mybuyer">My Buyer</Link>
                 </li>
               </ul>
             ) : (
@@ -72,6 +80,9 @@ const Sidebar = () => {
                 <Link to="/dashboard/myorder">My Order</Link>
               </li>
             )}
+              </ul>
+            }
+           
           </ul>
         </div>
       </div>

@@ -51,7 +51,7 @@ const Category = () => {
 
       const bookDetails = { buyerEmail, buyerPic, buyerPhone, buyerName, sellerName, sellerEmail, sellerPic, sellerNumber, price, meetingLocation, carName, carImage };
 
-        fetch(`http://localhost:5000/booknow?name=${carName}`, {
+        fetch(`http://localhost:5000/booknow?name=${user?.displayName}`, {
             method: "POST",
             headers: {
                 "content-type":"application/json"
@@ -60,10 +60,10 @@ const Category = () => {
         }).then((res) => {
           res.json();
         }).then(data => {
-          if (!data) {
-            setCarDetails(null)
-            return toast.error("Already booked this car. Please check you order list")
-          }
+          // if (!data) {
+          //   setCarDetails(null)
+          //   return toast.error("Already booked this car. Please check you order list")
+          // }
           toast.success("Book Successfully");
           setCarDetails(null)
         })

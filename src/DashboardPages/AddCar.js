@@ -1,9 +1,13 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { async } from "@firebase/util";
-
+import { auth } from "../Config/Firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 const AddCar = () => {
+  const [user] = useAuthState(auth);
+  const navigate = useNavigate();
   const { data: categories } = useQuery({
     queryKey: ["category"],
     queryFn: async () => {
@@ -14,47 +18,75 @@ const AddCar = () => {
   console.log(
     "🚀 ~ file: AddCar.js ~ line 14 ~ AddCar ~ categories",
     categories
-    );
-    const url =
+  );
+  const url =
     "https://api.imgbb.com/1/upload?key=ff2b48e99f3ed8f260b16b42b028c8f5";
-    const handleAddCar = async(e) => {
-        e.preventDefault();
-        const carName = e.target.carname.value;
-        const reSellPrice = e.target.resellprice.value;
-        const condition = e.target.condition.value;
-        const category = e.target.category.value;
-        const location = e.target.location.value;
-        const phone = e.target.phone.value;
-        const year = e.target.year.value;
-        const price = e.target.price.value;
-        const image = e.target.image.files[0];
-        const description = e.target.description.value;
- 
-        const formData = new FormData();
-        formData.append("image", image);
-        fetch(url, {
-          method: "post",
-          body: formData,
-        }).then(res => res.json())
-            .then(async (data) => {
-                e.target.reset();
-                const carDetails = { carName, reSellPrice, condition, category, location, phone, year, price, image:data.data.display_url, description, };
-                console.log("🚀 ~ file: AddCar.js ~ line 41 ~ handleAddCar ~ carDetails", carDetails)
-                
-                const allcar = await axios.post('http://localhost:5000/allcar', {
-                    
-                })
+  const handleAddCar = async (e) => {
+    e.preventDefault();
+    const carName = e.target.carname.value;
+    const reSellPrice = e.target.resellprice.value;
+    const condition = e.target.condition.value;
+    const category = e.target.category.value;
+    const location = e.target.location.value;
+    const phone = e.target.phone.value;
+    const year = e.target.year.value;
+    const price = e.target.price.value;
+    const image = e.target.image.files[0];
+    const description = e.target.description.value;
+    const email = e.target.email.value;
+
+    const formData = new FormData();
+    formData.append("image", image);
+    fetch(url, {
+      method: "post",
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        e.target.reset();
+        const carDetails = {
+          carName,
+          email,
+          name: user?.displayName,
+          userImg:user?.photoURL,
+          reSellPrice,
+          condition,
+          category,
+          location,
+          phone,
+          year,
+          price,
+          image: data.data.display_url,
+          description,
+        };
+
+        fetch("http://localhost:5000/allcar", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(carDetails),
         })
-    }
+          .then((res) => res.json())
+          .then((data) => {
+            toast.success("Add car successfully");
+            console.log(data);
+            navigate("/dashboard/mycar");
+          });
+      });
+  };
   return (
     <div>
       <h1 className="text-center font-bold text-4xl">Add Car</h1>
-      <form onSubmit={handleAddCar} className="mt-8 w-full mx-auto flex items-center justify-center flex-col ">
+      <form
+        onSubmit={handleAddCar}
+        className="mt-8 w-full mx-auto flex items-center justify-center flex-col "
+      >
         <div className="flex items-center w-full justify-center gap-5">
           <div className="w-full flex flex-col items-center justify-center">
             <label htmlFor="title">Car Name</label>
-                      <input
-                          name="carname"
+            <input
+              name="carname"
               required
               type="text"
               placeholder="Type here"
@@ -63,8 +95,8 @@ const AddCar = () => {
           </div>
           <div className="w-full flex flex-col items-center justify-center">
             <label htmlFor="title">Car Resell Price</label>
-                      <input
-                           name="resellprice"
+            <input
+              name="resellprice"
               required
               type="text"
               placeholder="Car Resell Price"
@@ -78,9 +110,9 @@ const AddCar = () => {
               <option disabled selected>
                 Condition
               </option>
-              <option value='Excellent'>Excellent</option>
-              <option value='Good'>Good</option>
-              <option value='Fair'>Fair</option>
+              <option value="Excellent">Excellent</option>
+              <option value="Good">Good</option>
+              <option value="Fair">Fair</option>
             </select>
           </div>
           <div className="">
@@ -99,8 +131,8 @@ const AddCar = () => {
         <div className="flex items-center w-full justify-center gap-5 mt-5">
           <div className="w-full flex flex-col items-center justify-center">
             <label htmlFor="location">Location</label>
-                      <input
-                          name="location"
+            <input
+              name="location"
               required
               type="text"
               placeholder="Location"
@@ -109,8 +141,8 @@ const AddCar = () => {
           </div>
           <div className="w-full flex flex-col items-center justify-center">
             <label htmlFor="number">Phone Number</label>
-                      <input
-                          name="phone"
+            <input
+              name="phone"
               required
               type="number"
               placeholder="Phone Number"
@@ -121,8 +153,8 @@ const AddCar = () => {
         <div className="flex w-full items-center justify-center gap-5 mt-5">
           <div className="w-full flex flex-col items-center justify-center">
             <label htmlFor="Year of purchase">Year of purchase </label>
-                      <input
-                          name="year"
+            <input
+              name="year"
               required
               type="number"
               placeholder="Year "
@@ -131,8 +163,8 @@ const AddCar = () => {
           </div>
           <div className="w-full flex flex-col items-center justify-center">
             <label htmlFor="Purchase Price">Purchase Price</label>
-                      <input
-                          name="price"
+            <input
+              name="price"
               required
               type="number"
               placeholder="Purchase Price"
@@ -143,22 +175,36 @@ const AddCar = () => {
         <div className="mt-5 flex flex-col items-center justify-center">
           <label htmlFor="Car image">Car image</label>
           <input
-                      required
-                      name="image"
+            required
+            name="image"
             type="file"
             className="file-input file-input-bordered w-full"
+          />
+          <label htmlFor="Email" className="mt-5">
+            Email
+          </label>
+          <input
+            required
+            name="email"
+            type="email"
+            className="input input-bordered w-full"
+            placeholder={user?.email}
+            disabled
+            value={user?.email}
           />
         </div>
         <div className="mt-5 flex flex-col w-full">
           <label htmlFor="Car Description">Car Description</label>
           <textarea
-                      required
-                      name="description"
+            required
+            name="description"
             className="textarea textarea-bordered"
             placeholder="Description"
           ></textarea>
         </div>
-        <button type="submit" className="mt-6 btn w-full">Add Car</button>
+        <button type="submit" className="mt-6 btn w-full">
+          Add Car
+        </button>
       </form>
     </div>
   );

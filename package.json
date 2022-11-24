@@ -49,16 +49,8 @@
     "tailwindcss": "^3.2.4"
   },
   "main": "postcss.config.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/programming-hero-web-course-4/b612-used-products-resale-clients-side-Kanon-Hosen.git"
-  },
+
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/programming-hero-web-course-4/b612-used-products-resale-clients-side-Kanon-Hosen/issues"
-  },
-  "homepage": "https://github.com/programming-hero-web-course-4/b612-used-products-resale-clients-side-Kanon-Hosen#readme",
-  "description": ""
+  "license": "ISC"
 }

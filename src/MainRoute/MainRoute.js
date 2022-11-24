@@ -1,12 +1,16 @@
 import React from 'react';
 import {createBrowserRouter, RouterProvider} from 'react-router-dom'
 import Blog from '../Pages/Blog';
-import Dashboard from '../Pages/Dashboard';
+import Category from '../Pages/Category';
+import Dashboard from '../DashboardPages/DashboardLayout';
 import Home from '../Pages/Home';
 import Layout from '../Pages/Layout';
 import Login from '../Pages/Login';
 import Register from '../Pages/Register';
 import Services from '../Pages/Services';
+import MyCar from '../DashboardPages/MyCar';
+import Orders from '../DashboardPages/Orders';
+import AddCar from '../DashboardPages/AddCar';
 const MainRoutes = () => {
     const router = createBrowserRouter([
         {
@@ -35,7 +39,25 @@ const MainRoutes = () => {
                 },
                 {
                     path: '/dashboard',
-                    element:<Dashboard></Dashboard>
+                    element: <Dashboard></Dashboard>,
+                    children: [
+                        {
+                            path: '/dashboard/mycar',
+                            element:<MyCar></MyCar>
+                        },
+                        {
+                            path: '/dashboard/orders',
+                            element:<Orders></Orders>
+                        },
+                        {
+                            path: '/dashboard/addcar',
+                            element:<AddCar></AddCar>
+                        }
+                    ]
+                },
+                {
+                    path: '/category/:name',
+                    element:<Category></Category>
                 }
             ]
         }

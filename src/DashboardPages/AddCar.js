@@ -64,10 +64,11 @@ const AddCar = () => {
           description,
         };
 
-        fetch("http://localhost:5000/allcar", {
+        fetch(`http://localhost:5000/allcar?email=${user?.email}`, {
           method: "POST",
           headers: {
             "content-type": "application/json",
+            authorization: `Bearer ${localStorage.getItem('Token')}`
           },
           body: JSON.stringify(carDetails),
         })

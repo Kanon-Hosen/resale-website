@@ -11,7 +11,12 @@ const MyOrder = () => {
   const [mainUser, setUser] = useState({});
   const [sppiner, setSppiner] = useState(true)
     useEffect(() => {
-        fetch(`http://localhost:5000/user/${user?.email}`)
+      fetch(`http://localhost:5000/user/${user?.email}`, {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem('Token')}`
+            
+          }
+        })
             .then(res => res.json())
             .then(data => {
               setUser(data);
@@ -20,7 +25,12 @@ const MyOrder = () => {
     }, [user?.email]);
     
   useEffect(() => {
-    fetch(`http://localhost:5000/myorder/${user?.email}`)
+    fetch(`http://localhost:5000/myorder/${user?.email}`, {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('Token')}`
+        
+      }
+    })
       .then((res) => res.json())
       .then((data) => {
         setOrders(data);

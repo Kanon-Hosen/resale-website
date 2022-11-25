@@ -8,7 +8,11 @@ const MyBuyer = () => {
     const [user] = useAuthState(auth);
     const [buyers, setBuyers] = useState([]);
     useEffect(() => {
-        fetch(`http://localhost:5000/myorder/${user?.email}`)
+      fetch(`http://localhost:5000/myorder/${user?.email}`, {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem('Token')}`
+          }
+        })
             .then(res => res.json())
             .then(data => {
                 setBuyers(data);
@@ -37,7 +41,7 @@ const MyBuyer = () => {
                   <th>{1 + i}</th>
                   <td>
                     <img
-                      className="w-24 h-24 rounded-full"
+                      className="w-16 h-16 rounded-full"
                       src={buyer?.buyerPic}
                       alt=""
                     />

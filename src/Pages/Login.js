@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {BsGoogle} from 'react-icons/bs'
 import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { auth } from '../Config/Firebase';
+import { useAuthState } from 'react-firebase-hooks/auth';
 const Login = () => {
     document.title = "Login";
     const [loading, setLoading] = useState(false);
@@ -22,20 +23,19 @@ const Login = () => {
           setLoading(false);
           e.target.reset();
           const currentUser = { email: email };
-          // fetch("http://localhost:4000/jwt", {
-          //   method: "POST",
-          //   headers: {
-          //     "content-type": "application/json",
-          //   },
-          //   body: JSON.stringify(currentUser),
-          // }).then(res => res.json())
-          //   .then((data) => {
-          //     localStorage.setItem("Token", data.token);
-
-          //   })
+          fetch("http://localhost:5000/jwt", {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify(currentUser),
+          }).then(res => res.json())
+            .then((data) => {
+              console.log("🚀 ~ file: Login.js ~ line 34 ~ .then ~ data", data)
+              localStorage.setItem("Token", data.data);
+          e.target.reset();
           navigate(from, { replace: true });
-
-          
+            })
         })
         .catch((err) => {
           console.log(err.message);
@@ -45,11 +45,23 @@ const Login = () => {
         });
     };
     // Google sign in:::::::::::::::
+  const [user] =useAuthState(auth)
     const googleLogin = () => {
       const gProvider = new GoogleAuthProvider();
+      const currentUser = { email: user?.email };
   
       signInWithPopup(auth, gProvider).then((user) => {
-        navigate(from, { replace: true });
+        fetch("http://localhost:5000/jwt", {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify(currentUser),
+          }).then(res => res.json())
+            .then((data) => {
+              localStorage.setItem("Token", data.data);
+              navigate(from, { replace: true });
+            })
       });
     };
     return (

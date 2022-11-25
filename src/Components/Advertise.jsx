@@ -33,10 +33,11 @@ const Advertise = () => {
 
   const bookDetails = { buyerEmail, buyerPic, buyerPhone, buyerName, sellerName, sellerEmail, sellerPic, sellerNumber, price, meetingLocation, carName, carImage };
 
-    fetch(`http://localhost:5000/booknow?name=${user?.displayName}`, {
+    fetch(`http://localhost:5000/booknow?email=${user?.email}`, {
         method: "POST",
         headers: {
-            "content-type":"application/json"
+            "content-type": "application/json",
+            authorization :`Bearer ${localStorage.getItem("Token")}`
         },
         body:JSON.stringify(bookDetails)
     }).then((res) => {
@@ -60,7 +61,7 @@ const Advertise = () => {
         </p>
         <div className="grid grid-cols-3 gap-7 mt-8">
           {data.map((advertise) => (
-            <div>
+            <div key={advertise._id}>
               <div className="shadow-md shadow-blue-100 rounded-md backdrop-blur-lg p-3">
                 <div className="w-full relative">
                   <img

@@ -51,10 +51,12 @@ const Category = () => {
 
       const bookDetails = { buyerEmail, buyerPic, buyerPhone, buyerName, sellerName, sellerEmail, sellerPic, sellerNumber, price, meetingLocation, carName, carImage };
 
-        fetch(`http://localhost:5000/booknow?name=${user?.displayName}`, {
+        fetch(`http://localhost:5000/booknow?name=${user?.displayName}&email=${user?.email}`, {
             method: "POST",
             headers: {
-                "content-type":"application/json"
+              "content-type": "application/json",
+            authorization: `Bearer ${localStorage.getItem('Token')}`
+              
             },
             body:JSON.stringify(bookDetails)
         }).then((res) => {

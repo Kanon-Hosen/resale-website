@@ -15,7 +15,11 @@ const MyCar = () => {
   const [refres, setRefres] = useState(false);
   console.log("🚀 ~ file: MyCar.js ~ line 14 ~ MyCar ~ allcar", allcar);
   useEffect(() => {
-    fetch(`http://localhost:5000/mycar?email=${email}`)
+    fetch(`http://localhost:5000/mycar?email=${email}`, {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('Token')}`
+      }
+    })
       .then((res) => res.json())
       .then((data) => {
         setAllcar(data.car);
@@ -25,41 +29,32 @@ const MyCar = () => {
   const handleStatus = (id) => {
     console.log("🚀 ~ file: MyCar.js ~ line 24 ~ handleStatus ~ id", id);
     // const status = "sold"
-    fetch(`http://localhost:5000/mycar/${id}`, {
+    fetch(`http://localhost:5000/mycar/${id}?email=${user?.email}`, {
       method: "PUT",
-
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('Token')}`
+      },
       body: JSON.stringify("sold"),
     }).then(() => {
       setRefres(!refres);
     });
   };
   const handleAdd = (car) => {
-    fetch(`http://localhost:5000/advertise`, {
+    fetch(`http://localhost:5000/advertise/${car?._id}?email=${user?.email}`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
+        authorization:`Bearer ${localStorage.getItem('Token')}`
       },
       body: JSON.stringify(car)
     }).then(res => res.json())
       .then(data => {
-        if (data) {
-      toast.success("Advertise Successfully");
-        
-        }
-      toast.error("Allready added");
-        
+       return toast.success("Advertise Successfully");
     })
   };
   return (
     <div>
-      <div className="flex items-center justify-between">
-        <input
-          type="text"
-          placeholder="Type here"
-          className="input w-full max-w-xs input-bordered"
-        />
-        <button className="btn btn-primary text-gray-50">Add Car</button>
-      </div>
+      <h1 className=" font-bold text-3xl">All Cars</h1>
       <div className="mt-10">
         <div className="overflow-x-auto">
           <table className="table w-full">

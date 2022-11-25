@@ -11,6 +11,7 @@ const MyCar = () => {
 
   const email = user?.email;
   const [allcar, setAllcar] = useState([]);
+  const [refres, setRefres] = useState(false);
   console.log("🚀 ~ file: MyCar.js ~ line 14 ~ MyCar ~ allcar", allcar);
   useEffect(() => {
     fetch(`http://localhost:5000/mycar?email=${email}`)
@@ -18,8 +19,30 @@ const MyCar = () => {
       .then((data) => {
         setAllcar(data.car);
       });
-  }, [email]);
-  
+  }, [email, refres]);
+
+  const handleStatus = (id) => {
+    console.log("🚀 ~ file: MyCar.js ~ line 24 ~ handleStatus ~ id", id);
+    // const status = "sold"
+    fetch(`http://localhost:5000/mycar/${id}`, {
+      method: "PUT",
+
+      body: JSON.stringify("sold"),
+    }).then(() => {
+      setRefres(!refres);
+    });
+  };
+  const handleAdd = (car) => {
+    fetch(`http://localhost:5000/advertise`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(car),
+    }).then(() => {
+      
+    })
+  };
   return (
     <div>
       <div className="flex items-center justify-between">
@@ -42,6 +65,7 @@ const MyCar = () => {
                 <th>Category</th>
                 <th>Location</th>
                 <th>Status</th>
+                <th>Advertise</th>
               </tr>
             </thead>
             <tbody>
@@ -60,11 +84,28 @@ const MyCar = () => {
                   <td>{car?.category}</td>
                   <td>{car?.location}</td>
                   <td>
-                    {car.sold ? (
-                      <p className="text-red-500">Sold</p>
+                    {car?.status === "sold" ? (
+                      <p className="btn btn-sm bg-red-600 border-none">Sold</p>
                     ) : (
-                      <p className="text-green-50 bg-green-500 border-none btn btn-sm">
-                        Active
+                      <p
+                        onClick={() => handleStatus(car?._id)}
+                        className="text-green-50 bg-green-500 border-none btn btn-sm"
+                      >
+                        Avilable
+                      </p>
+                    )}
+                  </td>
+                  <td>
+                    {car?.status === "sold" ? (
+                      <p className="btn btn-sm bg-red-600 border-none">
+                        Delete
+                      </p>
+                    ) : (
+                      <p
+                        onClick={() => handleAdd(car)}
+                        className="text-green-50 bg-blue-400 border-none btn btn-sm"
+                      >
+                        Advertise
                       </p>
                     )}
                   </td>

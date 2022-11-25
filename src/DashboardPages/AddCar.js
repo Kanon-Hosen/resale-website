@@ -5,6 +5,7 @@ import { auth } from "../Config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { format } from 'date-fns'
 const AddCar = () => {
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
@@ -34,6 +35,8 @@ const AddCar = () => {
     const image = e.target.image.files[0];
     const description = e.target.description.value;
     const email = e.target.email.value;
+    const date = format(new Date(), 'dd/mm/yyyy');
+
 
     const formData = new FormData();
     formData.append("image", image);
@@ -45,6 +48,7 @@ const AddCar = () => {
       .then((data) => {
         e.target.reset();
         const carDetails = {
+          date,
           carName,
           email,
           name: user?.displayName,

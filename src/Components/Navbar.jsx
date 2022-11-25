@@ -47,7 +47,7 @@ const Navbar = () => {
           </ul>
         </div>
         <Link to="/" className="normal-case text-xl">
-          daisyUI
+          <p className="font-serif font-semibold text-slate-900 text-xl" ><span className="text-blue-500">Uni</span>Car</p>
         </Link>
       </div>
       <div className="navbar-center hidden lg:flex">

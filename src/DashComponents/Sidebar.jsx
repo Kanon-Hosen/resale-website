@@ -5,8 +5,9 @@ import { BsFillPatchCheckFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
+import Sppiner from "../Components/Sppiner";
 const Sidebar = () => {
-  const [user] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const [Mainuser, setUser] = useState({});
   console.log(
     "🚀 ~ file: Sidebar.jsx ~ line 11 ~ Sidebar ~ Mainuser",
@@ -19,6 +20,9 @@ const Sidebar = () => {
         setUser(data);
       });
   }, [user?.email]);
+  if (loading) {
+    return <Sppiner></Sppiner>
+  }
   return (
     <div className="bg-gray-100 border-r-2">
       <div className="w-full flex flex-col items-center justify-center py-5">

@@ -84,7 +84,7 @@ const AddCar = () => {
       <h1 className="text-center font-bold text-4xl">Add Car</h1>
       <form
         onSubmit={handleAddCar}
-        className="mt-8 w-full mx-auto flex items-center justify-center flex-col "
+        className="mt-8 w-4/5 mx-auto flex items-center justify-center flex-col "
       >
         <div className="flex items-center w-full justify-center gap-5">
           <div className="w-full flex flex-col items-center justify-center">

@@ -4,6 +4,7 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import toast from "react-hot-toast";
 import { auth } from "../Config/Firebase";
 
 const MyCar = () => {
@@ -38,9 +39,15 @@ const MyCar = () => {
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify(car),
-    }).then(() => {
-      
+      body: JSON.stringify(car)
+    }).then(res => res.json())
+      .then(data => {
+        if (data) {
+      toast.success("Advertise Successfully");
+        
+        }
+      toast.error("Allready added");
+        
     })
   };
   return (

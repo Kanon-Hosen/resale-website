@@ -30,6 +30,7 @@ const Advertise = () => {
     const buyerPhone = e.target.phoneNumber.value;
     const carName = carDetails?.carName;
     const carImage = carDetails?.image;
+    // const carId = carDetails?._id;
 
   const bookDetails = { buyerEmail, buyerPic, buyerPhone, buyerName, sellerName, sellerEmail, sellerPic, sellerNumber, price, meetingLocation, carName, carImage };
 
@@ -50,7 +51,7 @@ const Advertise = () => {
 
 
 }
-  if (data) {
+  if (data.length > 0) {
     return (
       <div className="my-10 px-16">
         <h1 className="text-center text-slate-800 font-bold text-4xl">

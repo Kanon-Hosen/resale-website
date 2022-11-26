@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { auth } from "../Config/Firebase";
@@ -6,9 +6,11 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { format } from 'date-fns'
+import Sppiner from "../Components/Sppiner";
 const AddCar = () => {
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const { data: categories } = useQuery({
     queryKey: ["category"],
     queryFn: async () => {
@@ -16,13 +18,10 @@ const AddCar = () => {
       return data.data;
     },
   });
-  console.log(
-    "🚀 ~ file: AddCar.js ~ line 14 ~ AddCar ~ categories",
-    categories
-  );
   const url =
     "https://api.imgbb.com/1/upload?key=ff2b48e99f3ed8f260b16b42b028c8f5";
   const handleAddCar = async (e) => {
+    setLoading(true);
     e.preventDefault();
     const carName = e.target.carname.value;
     const reSellPrice = e.target.resellprice.value;
@@ -75,11 +74,14 @@ const AddCar = () => {
           .then((res) => res.json())
           .then((data) => {
             toast.success("Add car successfully");
-            console.log(data);
+            setLoading(false);
             navigate("/dashboard/mycar");
           });
       });
   };
+  if (loading) {
+    return <Sppiner></Sppiner>
+  }
   return (
     <div>
       <h1 className="text-center font-bold text-4xl">Add Car</h1>

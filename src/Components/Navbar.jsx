@@ -68,11 +68,11 @@ const Navbar = () => {
       </div>
       <div className="navbar-end">
         {user ? (
-          <Link onClick={handleLogout} className=" px-5 py-2 btn-primary text-white">
+          <Link onClick={handleLogout} className=" px-5 py-2 rounded-md border-none shadow-lg shadow-blue-300 bg-blue-400 rounde text-white">
             Log Out
           </Link>
         ) : (
-          <Link to="/login" className=" px-5 py-2 btn-primary text-white">
+          <Link to="/login" className=" px-5 py-2 rounded-md border-none shadow-lg shadow-blue-300 bg-blue-400 text-white">
             Login
           </Link>
         )}

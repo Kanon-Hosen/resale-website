@@ -68,9 +68,20 @@ const Register = () => {
   // google::::::::::::::::::::
   const hanedleGoogle = () => {
     const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+      .then((currentUser) => {
+      const user = { name: currentUser?.user?.displayName, email: currentUser?.user?.email, accountType: "Buyer" };
+      fetch("http://localhost:5000/users", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(user),
+      }).then(() => {
+        navigate("/");
+        toast.success('Register Successfully');
+      });
 
-    signInWithPopup(auth, provider).then(() => {
-      navigate("/");
     });
   };
   return (

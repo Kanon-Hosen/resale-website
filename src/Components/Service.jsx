@@ -4,10 +4,10 @@ import {MdPayment} from 'react-icons/md'
 import {TbChartDots} from 'react-icons/tb'
 const Service = () => {
     return (
-        <div className='my-16 px-16'>
-            <h1 className='text-4xl capitalize font-bold text-center'>What our serve for you</h1>
-            <p className='text-center my-4 text-gray-500'>We provide many of the best services for you and you will get the<br />  best benefits here</p>
-            <div className='mt-8 grid grid-cols-3 gap-8'>
+        <div className='my-16 md:px-16 px-8'>
+            <h1 className='md:text-4xl text-3xl capitalize font-bold text-center'>What our serve for you</h1>
+            <p className='text-center my-4 text-gray-500'>We provide many of the best services for you and you will get the  best benefits here</p>
+            <div className='mt-8 grid md:grid-cols-3 gap-8'>
                 <div className='shadow px-4 py-6 hover:bg-blue-50 transition-colors'>
                     <div className='text-blue-500'>
                     <AiOutlineLike className='text-5xl '></AiOutlineLike>

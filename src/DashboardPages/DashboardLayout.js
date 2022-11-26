@@ -11,11 +11,11 @@ const DashboardLayout = () => {
         return <Sppiner></Sppiner>
     }
     return (
-        <div className='flex justify-between'>
-            <div className='w-1/5'>
+        <div className='flex md:justify-between'>
+            <div className='w-1/5 h-screen'>
             <Sidebar></Sidebar>
             </div>
-            <div className='w-4/5 my-10 mx-16'>
+            <div className='w-4/5 md:my-10 my-3 md:mx-16 ml-3'>
             <Outlet></Outlet>
             </div>
         </div>

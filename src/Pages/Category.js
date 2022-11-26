@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import toast from "react-hot-toast";
@@ -12,6 +12,7 @@ const Category = () => {
     const { name } = useParams();
     const [user]= useAuthState(auth)
   const [carDetails, setCarDetails] = useState(null);
+  const [mainUser, setUser] = useState({});
   const { data: carCta, isFetching , isLoading} = useQuery({
     queryKey: ["category"],
     queryFn: async () => {
@@ -20,7 +21,15 @@ const Category = () => {
       return data;
     },
   });
+  console.log("🚀 ~ file: Category.js ~ line 24 ~ Category ~ carCta", carCta)
 
+  useEffect(() => {
+    fetch(`http://localhost:5000/user/${user?.email}`)
+      .then(res => res.json())
+      .then(data => {
+      setUser(data)
+    })
+  },[user?.email])
   if (isFetching || isLoading) {
     return <Sppiner></Sppiner>;
   }
@@ -48,6 +57,7 @@ const Category = () => {
         const buyerPhone = e.target.phoneNumber.value;
         const carName = carDetails.carName;
         const carImage = carDetails.image;
+        
 
       const bookDetails = { buyerEmail, buyerPic, buyerPhone, buyerName, sellerName, sellerEmail, sellerPic, sellerNumber, price, meetingLocation, carName, carImage };
 
@@ -62,10 +72,6 @@ const Category = () => {
         }).then((res) => {
           res.json();
         }).then(data => {
-          // if (!data) {
-          //   setCarDetails(null)
-          //   return toast.error("Already booked this car. Please check you order list")
-          // }
           toast.success("Book Successfully");
           setCarDetails(null)
         })
@@ -73,9 +79,9 @@ const Category = () => {
 
     }
   return (
-    <div className="px-16 my-6 h-screen">
+    <div className="md:px-16 px-8 my-6 h-full">
       <h1 className="text-3xl font-semibold text-slate-800">{name}</h1>
-      <div className="grid grid-cols-3 mt-8 gap-7">
+      <div className="grid md:grid-cols-3 mt-8 gap-7">
         {carCta.map((car) => (
           <div className="shadow-md shadow-blue-100 rounded-md backdrop-blur-lg p-3">
             <div className="w-full relative">
@@ -94,10 +100,12 @@ const Category = () => {
                 />
                 <div className="flex items-center gap-1">
                   <p className="font-semibold">{car.name}</p>
-                  <BsFillPatchCheckFill
+                  {
+                    car?.verify &&  <BsFillPatchCheckFill
                     title="Verifyed Seller"
                     className="text-blue-500 font-bold text-base"
                   ></BsFillPatchCheckFill>
+                 }
                 </div>
               </div>
               <p className="text-blue-500 text-sm font-semibold">

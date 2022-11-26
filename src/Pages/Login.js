@@ -4,6 +4,7 @@ import {BsGoogle} from 'react-icons/bs'
 import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { auth } from '../Config/Firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import toast from 'react-hot-toast';
 const Login = () => {
     document.title = "Login";
     const [loading, setLoading] = useState(false);
@@ -45,23 +46,33 @@ const Login = () => {
         });
     };
     // Google sign in:::::::::::::::
-  const [user] =useAuthState(auth)
+  // const [user] =useAuthState(auth)
     const googleLogin = () => {
-      const gProvider = new GoogleAuthProvider();
-      const currentUser = { email: user?.email };
-  
-      signInWithPopup(auth, gProvider).then((user) => {
-        fetch("http://localhost:5000/jwt", {
+      const gProvider = new GoogleAuthProvider();  
+      signInWithPopup(auth, gProvider).then((main) => {
+      console.log("🚀 ~ file: Login.js ~ line 76 ~ signInWithPopup ~ main", main)
+        const user = { name: main?.user?.displayName, email: main?.user?.email, accountType: "Buyer" };
+        fetch("http://localhost:5000/users", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(user),
+        }).then(() => {
+          fetch("http://localhost:5000/jwt", {
             method: "POST",
             headers: {
               "content-type": "application/json",
             },
-            body: JSON.stringify(currentUser),
+            body: JSON.stringify(user),
           }).then(res => res.json())
             .then((data) => {
               localStorage.setItem("Token", data.data);
               navigate(from, { replace: true });
+          toast.success('Login Successfully');
+
             })
+        });
       });
     };
     return (

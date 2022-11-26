@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { auth } from "../Config/Firebase";
@@ -11,6 +11,7 @@ const AddCar = () => {
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [mainUser, setUser] = useState({});
   const { data: categories } = useQuery({
     queryKey: ["category"],
     queryFn: async () => {
@@ -18,6 +19,13 @@ const AddCar = () => {
       return data.data;
     },
   });
+  useEffect(() => {
+    fetch(`http://localhost:5000/user/${user?.email}`)
+      .then(res => res.json())
+      .then(data => {
+      setUser(data)
+    })
+  },[user?.email])
   const url =
     "https://api.imgbb.com/1/upload?key=ff2b48e99f3ed8f260b16b42b028c8f5";
   const handleAddCar = async (e) => {
@@ -61,6 +69,7 @@ const AddCar = () => {
           price,
           image: data.data.display_url,
           description,
+          verify:mainUser?.verify,
         };
 
         fetch(`http://localhost:5000/allcar?email=${user?.email}`, {
@@ -87,7 +96,7 @@ const AddCar = () => {
       <h1 className="text-center font-bold text-4xl">Add Car</h1>
       <form
         onSubmit={handleAddCar}
-        className="mt-8 w-4/5 mx-auto flex items-center justify-center flex-col "
+        className="mt-8 md:w-4/5 px-4 md:px-0 mx-auto flex items-center justify-center flex-col "
       >
         <div className="flex items-center w-full justify-center gap-5">
           <div className="w-full flex flex-col items-center justify-center">

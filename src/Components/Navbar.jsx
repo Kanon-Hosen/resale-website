@@ -9,7 +9,7 @@ const Navbar = () => {
     await signOut(auth);
   }
   return (
-    <div className="navbar bg-blue-50 px-16 shadow border-b-2 border">
+    <div className="navbar bg-blue-100 px-4 md:px-16 shadow-md shadow-gray-200">
       <div className="navbar-start">
         <div className="dropdown">
           <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -33,7 +33,7 @@ const Navbar = () => {
             className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52 text-slate-900"
           >
             <li>
-              <Link to="/home">Home</Link>
+              <Link to="/">Home</Link>
             </li>
             <li>
               <Link to="/services">Service</Link>
@@ -47,11 +47,11 @@ const Navbar = () => {
           </ul>
         </div>
         <Link to="/" className="normal-case text-xl">
-          <p className="font-serif font-semibold text-slate-900 text-xl" ><span className="text-blue-500">Uni</span>Car</p>
+          <p className="font-serif font-semibold text-slate-900 text-xl" ><span className="text-blue-500 drop-shadow-sm">Uni</span>Car</p>
         </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal p-0 text-slate-900">
+        <ul className="menu menu-horizontal p-0 text-slate-900 drop-shadow-lg shadow-blue-400">
           <li>
             <Link to="/">Home</Link>
           </li>
@@ -68,9 +68,12 @@ const Navbar = () => {
       </div>
       <div className="navbar-end">
         {user ? (
-          <Link onClick={handleLogout} className=" px-5 py-2 rounded-md border-none shadow-lg shadow-blue-300 bg-blue-400 rounde text-white">
+          <div className="flex items-center gap-3 md:gap-5">
+            <Link><img className="w-10 h-10 rounded-full ring-2 shadow-lg shab" src={user?.photoURL} alt="" /></Link>
+            <Link onClick={handleLogout} className=" px-5 py-2 rounded-md border-none shadow-lg shadow-blue-300 bg-blue-400 rounde text-white">
             Log Out
           </Link>
+          </div>
         ) : (
           <Link to="/login" className=" px-5 py-2 rounded-md border-none shadow-lg shadow-blue-300 bg-blue-400 text-white">
             Login

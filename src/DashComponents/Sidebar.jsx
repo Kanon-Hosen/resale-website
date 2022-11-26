@@ -21,34 +21,31 @@ const Sidebar = () => {
       });
   }, [user?.email]);
   if (loading) {
-    return <Sppiner></Sppiner>
+    return <Sppiner></Sppiner>;
   }
   return (
-    <div className="bg-gray-100 border-r-2">
+    <div className="bg-gray-100 w-full overflow-x-hidden h-screen border-r-2 shadow p-2">
       <div className="w-full flex flex-col items-center justify-center py-5">
         <img
-          className="rounded-full w-24 h-24 ring-2 mb-3"
+          className="rounded-full md:w-24 md:h-24 w-12 h-12 ring-2 mb-3"
           src={user?.photoURL}
           alt=""
         />
         <div className="flex items-center justify-center gap-2">
-          <p className="text-center font-semibold text-xl text-slate-900">
+          <p className="text-center font-semibold md:text-xl text-xs text-slate-900">
             {user?.displayName}
           </p>
-          {Mainuser.accountType === "Seller" ? (
+          {Mainuser.verify && (
             <BsFillPatchCheckFill
               title="Verifyed"
               className="text-blue-500 font-bold text-xl"
             ></BsFillPatchCheckFill>
-          ) : (
-            ""
           )}
         </div>
       </div>
       <div className="divider"></div>
-      <div className="drawer drawer-mobile shadow-lg ">
-        <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
-        <div className="drawer-content flex flex-col items-center justify-center">
+      <div className="  ">
+        <div className=" flex flex-col items-center justify-center">
           {/* <label
             htmlFor="my-drawer-2"
             className="btn btn-primary drawer-button lg:hidden"
@@ -56,37 +53,41 @@ const Sidebar = () => {
             Open drawer
           </label> */}
         </div>
-        <div className="drawer-side ">
-          <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
-          <ul className="menu p-4 w-80 text-base-content ">
-            {
-              Mainuser?.role === 'admin' ? <ul>
-              <li><Link to='/dashboard/allsellers'>All sellers</Link></li>
-              <li><Link to='/dashboard/allbuyers'>All Buyers</Link></li>
-              </ul> : <ul>
-              {Mainuser?.accountType === "Seller" ? (
+        <div className="w-full ">
+          <ul className="md:menu md:p-4 w-full md:w-80 text-base-content ">
+            {Mainuser?.role === "admin" ? (
               <ul>
                 <li>
-                  <Link to="/dashboard/mycar">All Car</Link>
+                  <Link className="text-sm my-3" to="/dashboard/allsellers">All sellers</Link>
                 </li>
                 <li>
-                  <Link to="/dashboard/addcar">Add Car</Link>
-                </li>
-                <li>
-                  <Link to="/dashboard/myorder">All Orders</Link>
-                </li>
-                <li>
-                  <Link to="/dashboard/mybuyer">My Buyer</Link>
+                  <Link className="text-sm" to="/dashboard/allbuyers">All Buyers</Link>
                 </li>
               </ul>
             ) : (
-              <li>
-                <Link to="/dashboard/myorder">My Order</Link>
-              </li>
-            )}
+              <ul>
+                {Mainuser?.accountType === "Seller" ? (
+                  <ul className="flex flex-col gap-4">
+                    <li>
+                      <Link className="text-sm w-full" to="/dashboard/mycar">All Car</Link>
+                    </li>
+                    <li>
+                      <Link className="text-sm w-full" to="/dashboard/addcar">Add Car</Link>
+                    </li>
+                    <li>
+                      <Link className="text-sm w-full" to="/dashboard/myorder">All Orders</Link>
+                    </li>
+                    <li>
+                      <Link className="text-sm w-full" to="/dashboard/mybuyer">My Buyer</Link>
+                    </li>
+                  </ul>
+                ) : (
+                  <li>
+                    <Link className="text-sm w-full" to="/dashboard/myorder">My Order</Link>
+                  </li>
+                )}
               </ul>
-            }
-           
+            )}
           </ul>
         </div>
       </div>

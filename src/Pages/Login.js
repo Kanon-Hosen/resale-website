@@ -7,7 +7,7 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { auth } from "../Config/Firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
+// import { useAuthState } from "react-firebase-hooks/auth";
 import toast from "react-hot-toast";
 const Login = () => {
   document.title = "Login";
@@ -37,14 +37,12 @@ const Login = () => {
         })
           .then((res) => res.json())
           .then((data) => {
-            console.log("🚀 ~ file: Login.js ~ line 34 ~ .then ~ data", data);
             localStorage.setItem("Token", data.data);
             e.target.reset();
             navigate(from, { replace: true });
           });
       })
       .catch((err) => {
-        console.log(err.message);
         setLoading(false);
         e.target.reset();
         setError(err.message);
@@ -55,10 +53,6 @@ const Login = () => {
   const googleLogin = () => {
     const gProvider = new GoogleAuthProvider();
     signInWithPopup(auth, gProvider).then((main) => {
-      console.log(
-        "🚀 ~ file: Login.js ~ line 76 ~ signInWithPopup ~ main",
-        main
-      );
       const user = {
         name: main?.user?.displayName,
         email: main?.user?.email,

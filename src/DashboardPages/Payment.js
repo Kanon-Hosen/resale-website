@@ -3,12 +3,10 @@ import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { useState } from "react";
 import { useLocation } from "react-router";
 import toast from "react-hot-toast";
-import Sppiner from "../Components/Sppiner";
 const Payment = () => {
   const location = useLocation();
   const [carError, setError] = useState();
   const [success, setSuccess] = useState();
-  const [loading, setLoading] = useState(false);
   const stripe = useStripe();
   const elements = useElements();
   const [clientSecret, setClientSecret] = useState("");
@@ -31,16 +29,13 @@ const Payment = () => {
       .then((data) => setClientSecret(data?.clientSecret));
   }, [price]);
   const handleSubmit = async (e) => {
-    setLoading(true);
     e.preventDefault();
     if (!stripe || !elements) {
-      setLoading(false);
 
       return;
     }
     const card = elements?.getElement(CardElement);
     if (card == null) {
-      setLoading(false);
       return;
     }
     const { error, paymentMethod } = await stripe?.createPaymentMethod({
@@ -49,10 +44,8 @@ const Payment = () => {
     });
     if (error) {
       setError(error?.message);
-      setLoading(false);
     } else {
       setSuccess(paymentMethod.billing_details.name);
-      setLoading(false);
 
       setError("");
     }
@@ -67,18 +60,13 @@ const Payment = () => {
           },
         },
       });
-    console.log(
-      "🚀 ~ file: Payment.js ~ line 66 ~ handleSubmit ~ PaymentIntents",
-      PaymentIntent
-    );
+
     if (confirmError) {
-      setLoading(false);
       e.target.reset()
       return setError(confirmError.message);
     }
 
     if (!PaymentIntent) {
-      setLoading(false);
       toast.success("Success");
         setSuccess("Successfull");
         e.target.reset()

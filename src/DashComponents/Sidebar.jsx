@@ -9,10 +9,7 @@ import Sppiner from "../Components/Sppiner";
 const Sidebar = () => {
   const [user, loading] = useAuthState(auth);
   const [Mainuser, setUser] = useState({});
-  console.log(
-    "🚀 ~ file: Sidebar.jsx ~ line 11 ~ Sidebar ~ Mainuser",
-    Mainuser
-  );
+
   useEffect(() => {
     fetch(`https://resell-4tq3lnx88-kanon-hosen.vercel.app/user/${user?.email}`)
       .then((res) => res.json())

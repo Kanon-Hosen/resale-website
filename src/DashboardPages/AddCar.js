@@ -5,7 +5,6 @@ import { auth } from "../Config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { format } from "date-fns";
 import Sppiner from "../Components/Sppiner";
 const AddCar = () => {
   const [user] = useAuthState(auth);
@@ -45,7 +44,6 @@ const AddCar = () => {
     const description = e.target.description.value;
     const email = e.target.email.value;
     const date = new Date().toLocaleDateString("en-US");
-    console.log("🚀 ~ file: AddCar.js ~ line 48 ~ handleAddCar ~ date", date)
 
     const formData = new FormData();
     formData.append("image", image);

@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Link } from "react-router-dom";
 const Category = () => {
-  const { data: categories, isLoading } = useQuery({
+  const { data: categories } = useQuery({
     queryKey: ["category"],
     queryFn: async () => {
       const data = await axios.get(
@@ -12,10 +12,6 @@ const Category = () => {
       return data.data;
     },
   });
-  console.log(
-    "🚀 ~ file: Category.jsx ~ line 15 ~ Category ~ categories",
-    categories
-  );
 
   return (
     <div className="my-16 md:px-16 px-8">

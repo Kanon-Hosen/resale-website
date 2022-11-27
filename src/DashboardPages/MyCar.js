@@ -1,5 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -8,12 +6,11 @@ import toast from "react-hot-toast";
 import { auth } from "../Config/Firebase";
 
 const MyCar = () => {
-  const [user, loading] = useAuthState(auth);
+  const [user] = useAuthState(auth);
 
   const email = user?.email;
   const [allcar, setAllcar] = useState([]);
   const [refres, setRefres] = useState(false);
-  console.log("🚀 ~ file: MyCar.js ~ line 14 ~ MyCar ~ allcar", allcar);
   useEffect(() => {
     fetch(
       `https://resell-4tq3lnx88-kanon-hosen.vercel.app/mycar?email=${email}`,
@@ -30,7 +27,6 @@ const MyCar = () => {
   }, [email, refres]);
 
   const handleStatus = (id) => {
-    console.log("🚀 ~ file: MyCar.js ~ line 24 ~ handleStatus ~ id", id);
     // const status = "sold"
     fetch(
       `https://resell-4tq3lnx88-kanon-hosen.vercel.app/mycar/${id}?email=${user?.email}`,

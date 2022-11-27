@@ -13,7 +13,7 @@ const Category = () => {
   const { name } = useParams();
   const [user] = useAuthState(auth);
   const [carDetails, setCarDetails] = useState(null);
-  const [mainUser, setUser] = useState({});
+  // const [mainUser, setUser] = useState({});
   const {
     data: carCta,
     isFetching,
@@ -28,13 +28,12 @@ const Category = () => {
       return data;
     },
   });
-  console.log("🚀 ~ file: Category.js ~ line 24 ~ Category ~ carCta", carCta);
 
   useEffect(() => {
     fetch(`https://resell-4tq3lnx88-kanon-hosen.vercel.app/user/${user?.email}`)
       .then((res) => res.json())
       .then((data) => {
-        setUser(data);
+        // setUser(data);
       });
   }, [user?.email]);
   if (isFetching || isLoading) {

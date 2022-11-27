@@ -36,7 +36,8 @@ const Register = () => {
       .then((data) => {
         createUserWithEmailAndPassword(auth, email, password)
           .then((currentUser) => {
-            console.log(currentUser);
+        const userJwt = { email: email };
+
             updateProfile(auth.currentUser, {
               displayName: name,
               photoURL: data.data.display_url,
@@ -50,19 +51,30 @@ const Register = () => {
                 },
                 body: JSON.stringify(user),
               }).then(() => {
-                navigate("/");
+                fetch("https://resell-4tq3lnx88-kanon-hosen.vercel.app/jwt", {
+                  method: "POST",
+                  headers: {
+                    "content-type": "application/json",
+                  },
+                  body: JSON.stringify(userJwt),
+                }).then(res => res.json())
+                  .then((data) => {
+                    localStorage.setItem("Token", data.data);
+                e.target.reset();
+                    navigate('/');
                 toast.success("Register Successfully");
+                    
+                  })
               });
             });
           })
           .catch((err) => {
-            console.log(err.message);
             e.target.reset();
             setLoading(false);
             setError(err.message);
           });
       })
-      .catch((err) => console.log(err.message));
+      .catch((err) => {});
   };
   // google::::::::::::::::::::
   const hanedleGoogle = () => {

@@ -16,6 +16,7 @@ import MyBuyer from '../DashboardPages/MyBuyer';
 import PrivateRoute from '../Private/PrivateRoute';
 import AllBuyers from '../DashboardPages/AllBuyers';
 import AllSellers from '../DashboardPages/AllSellers';
+import Report from '../DashboardPages/Report';
 const MainRoutes = () => {
     const router = createBrowserRouter([
         {
@@ -73,6 +74,10 @@ const MainRoutes = () => {
                         {
                             path: '/dashboard/allbuyers',
                             element:<AllBuyers></AllBuyers>
+                        },
+                        {
+                            path: '/dashboard/report',
+                            element:<Report></Report>
                         },
                     ]
                 },

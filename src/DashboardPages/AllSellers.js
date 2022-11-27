@@ -1,6 +1,7 @@
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 const AllSellers = () => {
   const [sellers, setSellers] = useState([]);
@@ -34,6 +35,19 @@ const AllSellers = () => {
       })
      
     });
+  }
+  const handleDelete = (email) => {
+    const procced = window.confirm("Delete seller");
+    if (procced) {
+      fetch(`http://localhost:5000/user?email=${email}`, {
+        method:"delete"
+      }).then(() => {
+        setRefres(!refres)
+
+      })
+        
+        return toast.success("Delete seller Successfuly");
+    }return 
   }
   return (
     <div>
@@ -73,7 +87,7 @@ const AllSellers = () => {
                       )}
                     </td>
                     <td>
-                      <button className="btn btn-error btn-xs">Delete</button>
+                      <button onClick={()=>handleDelete(seller?.email)} className="btn btn-error btn-xs">Delete</button>
                     </td>
                   </tr>
                 );

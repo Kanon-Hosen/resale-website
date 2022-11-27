@@ -84,12 +84,12 @@ const MyCar = () => {
         <h1 className=" font-bold text-3xl">All Cars</h1>
         <div className="mt-10">
           <div className="overflow-x-auto">
-            <table className="table w-full">
+            <table className="table">
               <thead>
                 <tr>
                   <th></th>
                   <th>Car Image</th>
-                  <th>Car name</th>
+                  <th>Carname</th>
                   <th>Resell Price</th>
                   <th>Category</th>
                   <th>Location</th>

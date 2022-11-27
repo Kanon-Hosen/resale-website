@@ -63,6 +63,9 @@ const Sidebar = () => {
                 <li>
                   <Link className="text-sm" to="/dashboard/allbuyers">All Buyers</Link>
                 </li>
+                <li>
+                  <Link className="text-sm" to="/dashboard/report">Report item</Link>
+                </li>
               </ul>
             ) : (
               <ul>

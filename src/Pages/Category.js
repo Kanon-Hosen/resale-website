@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import toast from "react-hot-toast";
 import { BsFillPatchCheckFill } from "react-icons/bs";
+import { FiFlag } from "react-icons/fi";
 import { useParams } from "react-router";
 import Sppiner from "../Components/Sppiner";
 import { auth } from "../Config/Firebase";
@@ -77,13 +78,28 @@ const Category = () => {
         })
 
 
-    }
+  }
+  
+  //Report user::::::::::::::::::::::::::
+  const handleReport = () => {
+    fetch(`http://localhost:5000/report`, {
+      method: "post",
+      headers: {
+        "content-type":'application/json'
+      },
+      body:JSON.stringify(carDetails),
+    }).then(res => res.json())
+      .then(() => {
+      
+    })
+
+  }
   return (
     <div className="md:px-16 px-8 my-6 h-full">
       <h1 className="text-3xl font-semibold text-slate-800">{name}</h1>
       <div className="grid md:grid-cols-3 mt-8 gap-7">
         {carCta.map((car) => (
-          <div className="shadow-md shadow-blue-100 rounded-md backdrop-blur-lg p-3">
+          <div className="shadow-md relative shadow-blue-100 rounded-md backdrop-blur-lg p-3">
             <div className="w-full relative">
               <img
                 className="w-full h-64 bg-center bg-cover"
@@ -98,15 +114,21 @@ const Category = () => {
                   src={car.userImg}
                   alt=""
                 />
-                <div className="flex items-center gap-1">
-                  <p className="font-semibold">{car.name}</p>
+                <div className="flex items-center w-full justify-between">
+                  <div className="flex items-center gap-1">
+                  <p className="font-semibold ">{car.name}</p>
                   {
                     car?.verify &&  <BsFillPatchCheckFill
                     title="Verifyed Seller"
                     className="text-blue-500 font-bold text-base"
                   ></BsFillPatchCheckFill>
-                 }
+                  }
                 </div>
+                  <label  htmlFor="report-modal" onClick={()=>setCarDetails(car)} title="Report car" className=" hover:bg-blue-400 hover:text-white text-xl cursor-pointer p-3 bg-gray-200 rounded-full ">
+              <FiFlag></FiFlag>
+            </label>
+                </div>
+
               </div>
               <p className="text-blue-500 text-sm font-semibold">
                 {car.category}
@@ -140,8 +162,9 @@ const Category = () => {
             >
               Book Now
             </label>
-
+            
           </div>
+          
         ))}
         {carDetails && (
           <div>
@@ -172,6 +195,16 @@ const Category = () => {
             </div>
           </div>
         )}
+                        <input type="checkbox" id="report-modal" className="modal-toggle" />
+<div className="modal">
+  <div className="modal-box relative">
+    <label htmlFor="report-modal" className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+            <h3 className="text-lg font-bold">Report this car!</h3>
+            <div className="modal-action">
+            <label onClick={handleReport} htmlFor="report-modal" className="btn">Report</label>
+    </div>
+  </div>
+</div>
       </div>
     </div>
   );

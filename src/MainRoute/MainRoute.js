@@ -17,6 +17,8 @@ import PrivateRoute from '../Private/PrivateRoute';
 import AllBuyers from '../DashboardPages/AllBuyers';
 import AllSellers from '../DashboardPages/AllSellers';
 import Report from '../DashboardPages/Report';
+import DashboardDefault from '../DashComponents/DashboardDefault';
+import Payment from '../DashboardPages/Payment';
 const MainRoutes = () => {
     const router = createBrowserRouter([
         {
@@ -48,6 +50,10 @@ const MainRoutes = () => {
                     element: <PrivateRoute><Dashboard></Dashboard></PrivateRoute>,
                     children: [
                         {
+                            path: '/dashboard',
+                            element:<DashboardDefault></DashboardDefault>
+                    },
+                        {
                             path: '/dashboard/mycar',
                             element:<MyCar></MyCar>
                         },
@@ -78,6 +84,10 @@ const MainRoutes = () => {
                         {
                             path: '/dashboard/report',
                             element:<Report></Report>
+                        },
+                        {
+                            path: '/dashboard/payment',
+                            element:<Payment></Payment>
                         },
                     ]
                 },

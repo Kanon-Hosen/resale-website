@@ -6,7 +6,6 @@ import toast from "react-hot-toast";
 const AllSellers = () => {
   const [sellers, setSellers] = useState([]);
   const [refres, setRefres] = useState(false);
-  // const [users, setUsers] = useState({});
   useEffect(() => {
     fetch("http://localhost:5000/users")
       .then((res) => res.json())

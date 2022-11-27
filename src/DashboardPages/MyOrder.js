@@ -3,6 +3,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../Config/Firebase";
 import { useState } from "react";
 import Sppiner from "../Components/Sppiner";
+import { Link } from "react-router-dom";
 
 const MyOrder = () => {
   const [user, loading] = useAuthState(auth);
@@ -86,7 +87,7 @@ const MyOrder = () => {
                   <td>{order.meetingLocation}</td>
                   <td>{order.sellerNumber}</td>
                   <td>
-                    <button className="btn btn-primary btn-sm">Pay</button>
+                    <Link to='/dashboard/payment' state={order} className="btn btn-primary btn-sm">Pay</Link>
                   </td>
                 </tr>
               ))}

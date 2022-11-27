@@ -13,20 +13,26 @@ const Report = () => {
         setReport(data);
       });
   }, [refres]);
-    const handleDelete = (id) => {
-            fetch(`http://localhost:5000/report/${id}`, {
-                method: "DELETE",
-            }).then(() => {
-                    fetch(`http://localhost:5000/mycar/${id}`, {
-                        method: "delete",
-                    }).then((res) => {
-                       res.json()
-                    }).then(() => {
-                    setRefres(!refres);
-                    toast.success("Delete Successfully");
-                })
+  const handleDelete = (id) => {
+    fetch(`http://localhost:5000/report/${id}`, {
+      method: "DELETE",
+    })
+      .then((res) => {
+        res.json();
+      })
+      .then(() => {
+        fetch(`http://localhost:5000/mycar/${id}`, {
+          method: "delete",
         })
-    }
+          .then((res) => {
+            res.json();
+          })
+          .then(() => {
+            setRefres(!refres);
+            toast.success("Delete Successfully");
+          });
+      });
+  };
   return (
     <div>
       <div className="overflow-x-auto">
@@ -48,7 +54,12 @@ const Report = () => {
                 <td>{order.name}</td>
                 <td>{order.email}</td>
                 <td>
-                  <button onClick={()=>handleDelete(order?._id)} className="btn btn-error btn-sm">Delete</button>
+                  <button
+                    onClick={() => handleDelete(order?._id)}
+                    className="btn btn-error btn-sm"
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}

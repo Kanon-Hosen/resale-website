@@ -6,7 +6,8 @@ import { auth } from '../Config/Firebase';
 
 const MyBuyer = () => {
     const [user] = useAuthState(auth);
-    const [buyers, setBuyers] = useState([]);
+  const [buyers, setBuyers] = useState([]);
+  
     useEffect(() => {
       fetch(`http://localhost:5000/myorder/${user?.email}`, {
         headers: {
@@ -18,6 +19,7 @@ const MyBuyer = () => {
                 setBuyers(data);
         })
     }, [user?.email]);
+  
     return (
         <div>
               <div className="mt-10">

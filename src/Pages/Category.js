@@ -154,6 +154,9 @@ const Category = () => {
               <p className="text-blue-500 text-sm font-semibold">
                 {car.category}
               </p>
+              <p className="text-gray-700 text-xs font-semibold">
+               Publish date: {car.date}
+              </p>
 
               <p className="font-semibold text-xl">{car.carName}</p>
 

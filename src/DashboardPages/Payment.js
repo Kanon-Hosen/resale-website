@@ -1,20 +1,20 @@
 import React, { useEffect } from "react";
-import {
-  CardElement,
-  useStripe,
-  useElements,
-} from "@stripe/react-stripe-js";
+import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { useState } from "react";
 import { useLocation } from "react-router";
+import toast from "react-hot-toast";
+import Sppiner from "../Components/Sppiner";
 const Payment = () => {
   const location = useLocation();
-  console.log("🚀 ~ file: Payment.js ~ line 13 ~ Payment ~ location", location);
   const [carError, setError] = useState();
   const [success, setSuccess] = useState();
-  const strpie = useStripe();
-  const element = useElements();
+  const [loading, setLoading] = useState(false);
+  const stripe = useStripe();
+  const elements = useElements();
   const [clientSecret, setClientSecret] = useState("");
-  const price = location?.state?.price;
+    const price = location?.state?.price;
+    const name = location?.state?.buyerName;
+    const email = location?.state?.buyerEmail;
   useEffect(() => {
     fetch(
       "https://resell-4tq3lnx88-kanon-hosen.vercel.app/create-payment-intent",
@@ -22,7 +22,7 @@ const Payment = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          authorization: `Bearer ${localStorage.getItem("Token")}`,
+          //   authorization: `Bearer ${localStorage.getItem("Token")}`,
         },
         body: JSON.stringify({ price }),
       }
@@ -31,43 +31,63 @@ const Payment = () => {
       .then((data) => setClientSecret(data?.clientSecret));
   }, [price]);
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
-    if (!strpie || !element) {
+    if (!stripe || !elements) {
+      setLoading(false);
+
       return;
     }
-    const card = element.getElement(CardElement);
+    const card = elements?.getElement(CardElement);
     if (card == null) {
+      setLoading(false);
       return;
     }
-    const { error, paymentMethod } = await strpie.createPaymentMethod({
+    const { error, paymentMethod } = await stripe?.createPaymentMethod({
       type: "card",
       card,
     });
     if (error) {
-      setError(error.message);
+      setError(error?.message);
+      setLoading(false);
     } else {
+      setSuccess(paymentMethod.billing_details.name);
+      setLoading(false);
+
       setError("");
     }
 
     const { PaymentIntent, error: confirmError } =
-      await strpie.confirmCardPayment(clientSecret, {
+      await stripe?.confirmCardPayment(clientSecret, {
         payment_method: {
           card: card,
           billing_details: {
-            name: location?.state.buyerName,
-            // Id: location?.state?._id,
-            email: location?.state?.buyerEmail,
+            name: name,
+            email: email,
           },
         },
       });
+    console.log(
+      "🚀 ~ file: Payment.js ~ line 66 ~ handleSubmit ~ PaymentIntents",
+      PaymentIntent
+    );
     if (confirmError) {
+      setLoading(false);
+      e.target.reset()
       return setError(confirmError.message);
     }
 
-    if (PaymentIntent.status) {
-      setSuccess(PaymentIntent.id);
+    if (!PaymentIntent) {
+      setLoading(false);
+      toast.success("Success");
+        setSuccess("Successfull");
+        e.target.reset()
     }
+    // setLoading(false)
   };
+//   if (loading) {
+//       return <Sppiner></Sppiner>
+//   }
   return (
     <div>
       <h1 className="text-3xl font-semibold">Payment</h1>
@@ -82,34 +102,14 @@ const Payment = () => {
           </p>
         </div>
         <div className="w-full">
-          <form className=" shadow p-4" onSubmit={handleSubmit}>
-            <CardElement
-              options={{
-                style: {
-                  base: {
-                    fontSize: "16px",
-                    color: "#424770",
-                    "::placeholder": {
-                      color: "#aab7c4",
-                    },
-                  },
-                  invalid: {
-                    color: "#9e2146",
-                  },
-                },
-              }}
-            />
-            <p className="text-red-500 mt-2 text-sm">{carError}</p>
-            {success && (
-              <p className="text-black mt-2 text-sm">
-                Your transection id:{" "}
-                <span className="text-green-500">{success}</span>
-              </p>
-            )}
+          <form className="shadow p-4" onSubmit={handleSubmit}>
+            <CardElement />
+            <p className="text-red-500 text-sm mt-4">{carError}</p>
+            <p className="text-green-500 mt-4 text-sm">{success}</p>
             <button
-              className="mt-4 cursor-pointer text-white bg-blue-400 rounded shadow-md px-5 py-2"
               type="submit"
-              disabled={!strpie || clientSecret}
+              className="btn btn-primary mt-6"
+              disabled={!stripe || !elements}
             >
               Pay
             </button>
@@ -118,6 +118,7 @@ const Payment = () => {
       </div>
     </div>
   );
+  // }
 };
 
 export default Payment;

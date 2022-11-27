@@ -14,7 +14,7 @@ const Sidebar = () => {
     Mainuser
   );
   useEffect(() => {
-    fetch(`http://localhost:5000/user/${user?.email}`)
+    fetch(`https://resell-4tq3lnx88-kanon-hosen.vercel.app/user/${user?.email}`)
       .then((res) => res.json())
       .then((data) => {
         setUser(data);
@@ -58,13 +58,19 @@ const Sidebar = () => {
             {Mainuser?.role === "admin" ? (
               <ul>
                 <li>
-                  <Link className="text-sm my-3" to="/dashboard/allsellers">All sellers</Link>
+                  <Link className="text-sm my-3" to="/dashboard/allsellers">
+                    All sellers
+                  </Link>
                 </li>
                 <li>
-                  <Link className="text-sm" to="/dashboard/allbuyers">All Buyers</Link>
+                  <Link className="text-sm" to="/dashboard/allbuyers">
+                    All Buyers
+                  </Link>
                 </li>
                 <li>
-                  <Link className="text-sm" to="/dashboard/report">Report item</Link>
+                  <Link className="text-sm" to="/dashboard/report">
+                    Report item
+                  </Link>
                 </li>
               </ul>
             ) : (
@@ -72,21 +78,31 @@ const Sidebar = () => {
                 {Mainuser?.accountType === "Seller" ? (
                   <ul className="flex flex-col gap-4">
                     <li>
-                      <Link className="text-sm w-full" to="/dashboard/mycar">All Car</Link>
+                      <Link className="text-sm w-full" to="/dashboard/mycar">
+                        All Car
+                      </Link>
                     </li>
                     <li>
-                      <Link className="text-sm w-full" to="/dashboard/addcar">Add Car</Link>
+                      <Link className="text-sm w-full" to="/dashboard/addcar">
+                        Add Car
+                      </Link>
                     </li>
                     <li>
-                      <Link className="text-sm w-full" to="/dashboard/myorder">All Orders</Link>
+                      <Link className="text-sm w-full" to="/dashboard/myorder">
+                        All Orders
+                      </Link>
                     </li>
                     <li>
-                      <Link className="text-sm w-full" to="/dashboard/mybuyer">My Buyer</Link>
+                      <Link className="text-sm w-full" to="/dashboard/mybuyer">
+                        My Buyer
+                      </Link>
                     </li>
                   </ul>
                 ) : (
                   <li>
-                    <Link className="text-sm w-full" to="/dashboard/myorder">My Order</Link>
+                    <Link className="text-sm w-full" to="/dashboard/myorder">
+                      My Order
+                    </Link>
                   </li>
                 )}
               </ul>

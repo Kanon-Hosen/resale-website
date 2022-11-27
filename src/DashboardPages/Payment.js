@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
-import { loadStripe } from "@stripe/stripe-js";
 import {
   CardElement,
-  Elements,
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
@@ -16,58 +14,59 @@ const Payment = () => {
   const strpie = useStripe();
   const element = useElements();
   const [clientSecret, setClientSecret] = useState("");
-    const price = location?.state?.price;
+  const price = location?.state?.price;
   useEffect(() => {
-    fetch("http://localhost:5000/create-payment-intent", {
-      method: "POST",
+    fetch(
+      "https://resell-4tq3lnx88-kanon-hosen.vercel.app/create-payment-intent",
+      {
+        method: "POST",
         headers: {
-            "Content-Type": "application/json",
-            authorization: `Bearer ${localStorage.getItem("Token")}`
+          "Content-Type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("Token")}`,
         },
-      body: JSON.stringify({ price} ),
-    })
+        body: JSON.stringify({ price }),
+      }
+    )
       .then((res) => res.json())
       .then((data) => setClientSecret(data?.clientSecret));
   }, [price]);
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (!strpie || !element) {
-            return;
-        }
-        const card = element.getElement(CardElement);
-        if (card == null) {
-            return;
-        }
-        const { error, paymentMethod } = await strpie.createPaymentMethod({
-            type: "card",
-            card,
-        });
-        if (error) {
-            setError(error.message);
-        } else {
-            setError("");
-        }
-      
-        const { PaymentIntent, error: confirmError } = await strpie.confirmCardPayment(
-            clientSecret,
-          {
-                payment_method: {
-                    card: card,
-                    billing_details: {
-                        name: location?.state.buyerName,
-                        // Id: location?.state?._id,
-                        email:location?.state?.buyerEmail,
-                    },
-                },
-            },
-        );
-        if (confirmError) {
-            return setError(confirmError.message);
-        }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!strpie || !element) {
+      return;
+    }
+    const card = element.getElement(CardElement);
+    if (card == null) {
+      return;
+    }
+    const { error, paymentMethod } = await strpie.createPaymentMethod({
+      type: "card",
+      card,
+    });
+    if (error) {
+      setError(error.message);
+    } else {
+      setError("");
+    }
 
-        if (PaymentIntent.status) {
-            setSuccess(PaymentIntent.id);
-        }
+    const { PaymentIntent, error: confirmError } =
+      await strpie.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: card,
+          billing_details: {
+            name: location?.state.buyerName,
+            // Id: location?.state?._id,
+            email: location?.state?.buyerEmail,
+          },
+        },
+      });
+    if (confirmError) {
+      return setError(confirmError.message);
+    }
+
+    if (PaymentIntent.status) {
+      setSuccess(PaymentIntent.id);
+    }
   };
   return (
     <div>
@@ -101,12 +100,12 @@ const Payment = () => {
               }}
             />
             <p className="text-red-500 mt-2 text-sm">{carError}</p>
-                      {
-                          success && <p className="text-black mt-2 text-sm">
-                          Your transection id:{" "}
-                          <span className="text-green-500">{success}</span>
-                        </p>
-            }
+            {success && (
+              <p className="text-black mt-2 text-sm">
+                Your transection id:{" "}
+                <span className="text-green-500">{success}</span>
+              </p>
+            )}
             <button
               className="mt-4 cursor-pointer text-white bg-blue-400 rounded shadow-md px-5 py-2"
               type="submit"

@@ -10,7 +10,7 @@ const Advertise = () => {
   const [user] = useAuthState(auth);
 
   useEffect(() => {
-    fetch("http://localhost:5000/advertise")
+    fetch("https://resell-4tq3lnx88-kanon-hosen.vercel.app/advertise")
       .then((res) => res.json())
       .then((data) => {
         setData(data.data);
@@ -48,14 +48,17 @@ const Advertise = () => {
       carImage,
     };
 
-    fetch(`http://localhost:5000/booknow?email=${user?.email}`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("Token")}`,
-      },
-      body: JSON.stringify(bookDetails),
-    })
+    fetch(
+      `https://resell-4tq3lnx88-kanon-hosen.vercel.app/booknow?email=${user?.email}`,
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("Token")}`,
+        },
+        body: JSON.stringify(bookDetails),
+      }
+    )
       .then((res) => {
         res.json();
       })

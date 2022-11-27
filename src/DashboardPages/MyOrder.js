@@ -10,40 +10,44 @@ const MyOrder = () => {
 
   const [orders, setOrders] = useState([]);
   const [mainUser, setUser] = useState({});
-  const [sppiner, setSppiner] = useState(true)
-    useEffect(() => {
-      fetch(`http://localhost:5000/user/${user?.email}`, {
-        headers: {
-          authorization: `Bearer ${localStorage.getItem('Token')}`
-            
-          }
-        })
-            .then(res => res.json())
-            .then(data => {
-              setUser(data);
-              setSppiner(false)
-        })
-    }, [user?.email]);
-    
+  const [sppiner, setSppiner] = useState(true);
   useEffect(() => {
-    fetch(`http://localhost:5000/myorder/${user?.email}`, {
-      headers: {
-        authorization: `Bearer ${localStorage.getItem('Token')}`
-        
+    fetch(
+      `https://resell-4tq3lnx88-kanon-hosen.vercel.app/user/${user?.email}`,
+      {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("Token")}`,
+        },
       }
-    })
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setUser(data);
+        setSppiner(false);
+      });
+  }, [user?.email]);
+
+  useEffect(() => {
+    fetch(
+      `https://resell-4tq3lnx88-kanon-hosen.vercel.app/myorder/${user?.email}`,
+      {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("Token")}`,
+        },
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         setOrders(data);
-        setSppiner(false)
+        setSppiner(false);
       });
   }, [user?.email]);
 
   if (loading) {
-    return <Sppiner></Sppiner>
+    return <Sppiner></Sppiner>;
   }
   if (sppiner) {
-    return <Sppiner></Sppiner>
+    return <Sppiner></Sppiner>;
   }
   if (!orders?.length) {
     return (
@@ -54,179 +58,187 @@ const MyOrder = () => {
   }
   return (
     <>
-      {
-        mainUser?.accountType === "Buyer" ? <div>
-        <div className="overflow-x-auto">
-          <table className="table w-full">
-            <thead>
-              <tr>
-                <th></th>
-                <th>Car Image</th>
-                <th>Car Name</th>
-                <th>Car Price</th>
-                <th>Seller Name</th>
-                <th>Meeting Location</th>
-                <th>Seller Number</th>
-                <th>Payment</th>
-              </tr>
-            </thead>
-            <tbody>
-              {orders.map((order, i) => (
-                <tr key={order._id}>
-                  <th>{1 + i}</th>
-                  <td>
-                    <img
-                      className="w-16 h-16 object-cover rounded-full ring-2"
-                      src={order.carImage}
-                      alt=""
-                    />
-                  </td>
-                  <td>{order.carName}</td>
-                  <td>{order.price}</td>
-                  <td>{order.sellerName}</td>
-                  <td>{order.meetingLocation}</td>
-                  <td>{order.sellerNumber}</td>
-                  <td>
-                    <Link to='/dashboard/payment' state={order} className="btn btn-primary btn-sm">Pay</Link>
-                  </td>
+      {mainUser?.accountType === "Buyer" ? (
+        <div>
+          <div className="overflow-x-auto">
+            <table className="table w-full">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Car Image</th>
+                  <th>Car Name</th>
+                  <th>Car Price</th>
+                  <th>Seller Name</th>
+                  <th>Meeting Location</th>
+                  <th>Seller Number</th>
+                  <th>Payment</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div> :<div>
-            <div className="overflow-x-auto">
-              <table className="table w-full">
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>Car Image</th>
-                    <th>Car Name</th>
-                    <th>Car Price</th>
-                    <th>Buyer Name</th>
-                    <th>Location</th>
-                    <th>Buyer Number</th>
-                    <th>Payment</th>
+              </thead>
+              <tbody>
+                {orders.map((order, i) => (
+                  <tr key={order._id}>
+                    <th>{1 + i}</th>
+                    <td>
+                      <img
+                        className="w-16 h-16 object-cover rounded-full ring-2"
+                        src={order.carImage}
+                        alt=""
+                      />
+                    </td>
+                    <td>{order.carName}</td>
+                    <td>{order.price}</td>
+                    <td>{order.sellerName}</td>
+                    <td>{order.meetingLocation}</td>
+                    <td>{order.sellerNumber}</td>
+                    <td>
+                      <Link
+                        to="/dashboard/payment"
+                        state={order}
+                        className="btn btn-primary btn-sm"
+                      >
+                        Pay
+                      </Link>
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                  {orders.map((order, i) => (
-                    <tr key={order._id}>
-                      <th>{1 + i}</th>
-                      <td>
-                        <img
-                          className="w-16 h-16 object-cover rounded-full ring-2"
-                          src={order.carImage}
-                          alt=""
-                        />
-                      </td>
-                      <td>{order.carName}</td>
-                      <td>${order.price}</td>
-                      <td>{order.buyerName}</td>
-                      <td>{order.meetingLocation}</td>
-                      <td>{order.buyerPhone}</td>
-                      <td>
-                        <button className="btn btn-success text-xs btn-xs">Incomplete</button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                ))}
+              </tbody>
+            </table>
           </div>
-      }
-      
+        </div>
+      ) : (
+        <div>
+          <div className="overflow-x-auto">
+            <table className="table w-full">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Car Image</th>
+                  <th>Car Name</th>
+                  <th>Car Price</th>
+                  <th>Buyer Name</th>
+                  <th>Location</th>
+                  <th>Buyer Number</th>
+                  <th>Payment</th>
+                </tr>
+              </thead>
+              <tbody>
+                {orders.map((order, i) => (
+                  <tr key={order._id}>
+                    <th>{1 + i}</th>
+                    <td>
+                      <img
+                        className="w-16 h-16 object-cover rounded-full ring-2"
+                        src={order.carImage}
+                        alt=""
+                      />
+                    </td>
+                    <td>{order.carName}</td>
+                    <td>${order.price}</td>
+                    <td>{order.buyerName}</td>
+                    <td>{order.meetingLocation}</td>
+                    <td>{order.buyerPhone}</td>
+                    <td>
+                      <button className="btn btn-success text-xs btn-xs">
+                        Incomplete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
     </>
-  )
-//     if (mainUser?.accountType === 'Buyer') {
-//         return (
-//             <div>
-//               <div className="overflow-x-auto">
-//                 <table className="table w-full">
-//                   <thead>
-//                     <tr>
-//                       <th></th>
-//                       <th>Car Image</th>
-//                       <th>Car Name</th>
-//                       <th>Car Price</th>
-//                       <th>Seller Name</th>
-//                       <th>Meeting Location</th>
-//                       <th>Seller Number</th>
-//                       <th>Payment</th>
-//                     </tr>
-//                   </thead>
-//                   <tbody>
-//                     {orders.map((order, i) => (
-//                       <tr>
-//                         <th>{1 + i}</th>
-//                         <td>
-//                           <img
-//                             className="w-16 h-16 object-cover rounded-full ring-2"
-//                             src={order.carImage}
-//                             alt=""
-//                           />
-//                         </td>
-//                         <td>{order.carName}</td>
-//                         <td>{order.price}</td>
-//                         <td>{order.sellerName}</td>
-//                         <td>{order.meetingLocation}</td>
-//                         <td>{order.sellerNumber}</td>
-//                         <td>
-//                           <button className="btn btn-primary btn-sm">Pay</button>
-//                         </td>
-//                       </tr>
-//                     ))}
-//                   </tbody>
-//                 </table>
-//               </div>
-//             </div>
-//           );
-//   }
-//   if (mainUser?.accountType === "Seller") {
-//     return (
-//       <div>
-//         <div className="overflow-x-auto">
-//           <table className="table w-full">
-//             <thead>
-//               <tr>
-//                 <th></th>
-//                 <th>Car Image</th>
-//                 <th>Car Name</th>
-//                 <th>Car Price</th>
-//                 <th>Buyer Name</th>
-//                 <th>Location</th>
-//                 <th>Buyer Number</th>
-//                 <th>Payment</th>
-//               </tr>
-//             </thead>
-//             <tbody>
-//               {orders.map((order, i) => (
-//                 <tr>
-//                   <th>{1 + i}</th>
-//                   <td>
-//                     <img
-//                       className="w-16 h-16 object-cover rounded-full ring-2"
-//                       src={order.carImage}
-//                       alt=""
-//                     />
-//                   </td>
-//                   <td>{order.carName}</td>
-//                   <td>${order.price}</td>
-//                   <td>{order.buyerName}</td>
-//                   <td>{order.meetingLocation}</td>
-//                   <td>{order.buyerPhone}</td>
-//                   <td>
-//                     <button className="btn btn-success text-xs btn-xs">Incomplete</button>
-//                   </td>
-//                 </tr>
-//               ))}
-//             </tbody>
-//           </table>
-//         </div>
-//       </div>
-//     );
-// }
-    
+  );
+  //     if (mainUser?.accountType === 'Buyer') {
+  //         return (
+  //             <div>
+  //               <div className="overflow-x-auto">
+  //                 <table className="table w-full">
+  //                   <thead>
+  //                     <tr>
+  //                       <th></th>
+  //                       <th>Car Image</th>
+  //                       <th>Car Name</th>
+  //                       <th>Car Price</th>
+  //                       <th>Seller Name</th>
+  //                       <th>Meeting Location</th>
+  //                       <th>Seller Number</th>
+  //                       <th>Payment</th>
+  //                     </tr>
+  //                   </thead>
+  //                   <tbody>
+  //                     {orders.map((order, i) => (
+  //                       <tr>
+  //                         <th>{1 + i}</th>
+  //                         <td>
+  //                           <img
+  //                             className="w-16 h-16 object-cover rounded-full ring-2"
+  //                             src={order.carImage}
+  //                             alt=""
+  //                           />
+  //                         </td>
+  //                         <td>{order.carName}</td>
+  //                         <td>{order.price}</td>
+  //                         <td>{order.sellerName}</td>
+  //                         <td>{order.meetingLocation}</td>
+  //                         <td>{order.sellerNumber}</td>
+  //                         <td>
+  //                           <button className="btn btn-primary btn-sm">Pay</button>
+  //                         </td>
+  //                       </tr>
+  //                     ))}
+  //                   </tbody>
+  //                 </table>
+  //               </div>
+  //             </div>
+  //           );
+  //   }
+  //   if (mainUser?.accountType === "Seller") {
+  //     return (
+  //       <div>
+  //         <div className="overflow-x-auto">
+  //           <table className="table w-full">
+  //             <thead>
+  //               <tr>
+  //                 <th></th>
+  //                 <th>Car Image</th>
+  //                 <th>Car Name</th>
+  //                 <th>Car Price</th>
+  //                 <th>Buyer Name</th>
+  //                 <th>Location</th>
+  //                 <th>Buyer Number</th>
+  //                 <th>Payment</th>
+  //               </tr>
+  //             </thead>
+  //             <tbody>
+  //               {orders.map((order, i) => (
+  //                 <tr>
+  //                   <th>{1 + i}</th>
+  //                   <td>
+  //                     <img
+  //                       className="w-16 h-16 object-cover rounded-full ring-2"
+  //                       src={order.carImage}
+  //                       alt=""
+  //                     />
+  //                   </td>
+  //                   <td>{order.carName}</td>
+  //                   <td>${order.price}</td>
+  //                   <td>{order.buyerName}</td>
+  //                   <td>{order.meetingLocation}</td>
+  //                   <td>{order.buyerPhone}</td>
+  //                   <td>
+  //                     <button className="btn btn-success text-xs btn-xs">Incomplete</button>
+  //                   </td>
+  //                 </tr>
+  //               ))}
+  //             </tbody>
+  //           </table>
+  //         </div>
+  //       </div>
+  //     );
+  // }
 };
 
 export default MyOrder;

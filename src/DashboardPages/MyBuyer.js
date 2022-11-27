@@ -1,28 +1,31 @@
-import React from 'react';
-import { useState } from 'react';
-import { useEffect } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '../Config/Firebase';
+import React from "react";
+import { useState } from "react";
+import { useEffect } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../Config/Firebase";
 
 const MyBuyer = () => {
-    const [user] = useAuthState(auth);
+  const [user] = useAuthState(auth);
   const [buyers, setBuyers] = useState([]);
-  
-    useEffect(() => {
-      fetch(`http://localhost:5000/myorder/${user?.email}`, {
+
+  useEffect(() => {
+    fetch(
+      `https://resell-4tq3lnx88-kanon-hosen.vercel.app/myorder/${user?.email}`,
+      {
         headers: {
-          authorization: `Bearer ${localStorage.getItem('Token')}`
-          }
-        })
-            .then(res => res.json())
-            .then(data => {
-                setBuyers(data);
-        })
-    }, [user?.email]);
-  
-    return (
-        <div>
-              <div className="mt-10">
+          authorization: `Bearer ${localStorage.getItem("Token")}`,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setBuyers(data);
+      });
+  }, [user?.email]);
+
+  return (
+    <div>
+      <div className="mt-10">
         <div className="overflow-x-auto">
           <table className="table w-full">
             <thead>
@@ -51,17 +54,15 @@ const MyBuyer = () => {
                   <td>{buyer?.buyerName}</td>
                   <td>{buyer?.buyerEmail}</td>
                   <td>{buyer?.buyerPhone}</td>
-                  <td>
-                        {buyer?.meetingLocation}
-                  </td>
+                  <td>{buyer?.meetingLocation}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       </div>
-        </div>
-    );
+    </div>
+  );
 };
 
 export default MyBuyer;

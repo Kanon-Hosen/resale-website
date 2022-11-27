@@ -15,11 +15,14 @@ const MyCar = () => {
   const [refres, setRefres] = useState(false);
   console.log("🚀 ~ file: MyCar.js ~ line 14 ~ MyCar ~ allcar", allcar);
   useEffect(() => {
-    fetch(`http://localhost:5000/mycar?email=${email}`, {
-      headers: {
-        authorization: `Bearer ${localStorage.getItem('Token')}`
+    fetch(
+      `https://resell-4tq3lnx88-kanon-hosen.vercel.app/mycar?email=${email}`,
+      {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("Token")}`,
+        },
       }
-    })
+    )
       .then((res) => res.json())
       .then((data) => {
         setAllcar(data.car);
@@ -29,56 +32,70 @@ const MyCar = () => {
   const handleStatus = (id) => {
     console.log("🚀 ~ file: MyCar.js ~ line 24 ~ handleStatus ~ id", id);
     // const status = "sold"
-    fetch(`http://localhost:5000/mycar/${id}?email=${user?.email}`, {
-      method: "PUT",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem('Token')}`
-      },
-      body: JSON.stringify("sold"),
-    }).then(() => {
+    fetch(
+      `https://resell-4tq3lnx88-kanon-hosen.vercel.app/mycar/${id}?email=${user?.email}`,
+      {
+        method: "PUT",
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("Token")}`,
+        },
+        body: JSON.stringify("sold"),
+      }
+    ).then(() => {
       setRefres(!refres);
     });
   };
   const handleAdd = (car) => {
-    fetch(`http://localhost:5000/advertise/${car?._id}?email=${user?.email}`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        authorization:`Bearer ${localStorage.getItem('Token')}`
-      },
-      body: JSON.stringify(car)
-    }).then(res => res.json())
-      .then(data => {
+    fetch(
+      `https://resell-4tq3lnx88-kanon-hosen.vercel.app/advertise/${car?._id}?email=${user?.email}`,
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("Token")}`,
+        },
+        body: JSON.stringify(car),
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
         if (data) {
-       return toast.success("Advertise Successfully");
-          
+          return toast.success("Advertise Successfully");
         }
         return toast.error("Already added");
-    })
+      });
   };
   // ? Delete Sold out Product:::::::::::::::::
   const handleDelelte = (id) => {
     const procced = window.confirm("Delete car");
     if (procced) {
-      fetch(`http://localhost:5000/mycar/${id}`, {
-        method:"DELETE",
-      }).then(res => res.json())
+      fetch(`https://resell-4tq3lnx88-kanon-hosen.vercel.app/mycar/${id}`, {
+        method: "DELETE",
+      })
+        .then((res) => res.json())
         .then((data) => {
-          fetch(`http://localhost:5000/advertise/${id}`, {
-            method:"DELETE",
-          }).then(res => res.json())
+          fetch(
+            `https://resell-4tq3lnx88-kanon-hosen.vercel.app/advertise/${id}`,
+            {
+              method: "DELETE",
+            }
+          )
+            .then((res) => res.json())
             .then(() => {
               setRefres(!refres);
-            })
-        return toast.success("Delete Success")
-        })
+            });
+          return toast.success("Delete Success");
+        });
     }
     return toast.error("Cancel");
-  }
+  };
   if (allcar?.length < 1) {
-    return <div className="text-center text-4xl mt-8 text-slate-800">No car available</div>
-  }
-  else {
+    return (
+      <div className="text-center text-4xl mt-8 text-slate-800">
+        No car available
+      </div>
+    );
+  } else {
     return (
       <div>
         <h1 className=" font-bold text-3xl">All Cars</h1>
@@ -114,7 +131,9 @@ const MyCar = () => {
                     <td>{car?.location}</td>
                     <td>
                       {car?.status === "sold" ? (
-                        <p className="btn btn-sm bg-red-600 border-none">Sold</p>
+                        <p className="btn btn-sm bg-red-600 border-none">
+                          Sold
+                        </p>
                       ) : (
                         <p
                           onClick={() => handleStatus(car?._id)}
@@ -126,7 +145,10 @@ const MyCar = () => {
                     </td>
                     <td>
                       {car?.status === "sold" ? (
-                        <p onClick={()=>handleDelelte(car?._id)} className="btn btn-sm bg-red-600 border-none">
+                        <p
+                          onClick={() => handleDelelte(car?._id)}
+                          className="btn btn-sm bg-red-600 border-none"
+                        >
                           Delete
                         </p>
                       ) : (
@@ -146,7 +168,7 @@ const MyCar = () => {
         </div>
       </div>
     );
- }
+  }
 };
 
 export default MyCar;

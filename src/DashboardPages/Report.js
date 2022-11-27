@@ -7,21 +7,21 @@ const Report = () => {
   const [reports, setReport] = useState([]);
   const [refres, setRefres] = useState(false);
   useEffect(() => {
-    fetch("http://localhost:5000/report")
+    fetch("https://resell-4tq3lnx88-kanon-hosen.vercel.app/report")
       .then((res) => res.json())
       .then((data) => {
         setReport(data);
       });
   }, [refres]);
   const handleDelete = (id) => {
-    fetch(`http://localhost:5000/report/${id}`, {
+    fetch(`https://resell-4tq3lnx88-kanon-hosen.vercel.app/report/${id}`, {
       method: "DELETE",
     })
       .then((res) => {
         res.json();
       })
       .then(() => {
-        fetch(`http://localhost:5000/mycar/${id}`, {
+        fetch(`https://resell-4tq3lnx88-kanon-hosen.vercel.app/mycar/${id}`, {
           method: "delete",
         })
           .then((res) => {

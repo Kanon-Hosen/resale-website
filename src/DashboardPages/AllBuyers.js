@@ -5,7 +5,7 @@ const AllBuyers = () => {
   const [buyers, setBuyers] = useState([]);
   const [refres, setRefres] = useState(false);
   useEffect(() => {
-    fetch("http://localhost:5000/users")
+    fetch("https://resell-4tq3lnx88-kanon-hosen.vercel.app/users")
       .then((res) => res.json())
       .then((data) => {
         setBuyers(data);
@@ -14,16 +14,19 @@ const AllBuyers = () => {
   const handleDelete = (email) => {
     const procced = window.confirm("Delete seller");
     if (procced) {
-      fetch(`http://localhost:5000/user?email=${email}`, {
-        method:"delete"
-      }).then(() => {
-        setRefres(!refres)
+      fetch(
+        `https://resell-4tq3lnx88-kanon-hosen.vercel.app/user?email=${email}`,
+        {
+          method: "delete",
+        }
+      ).then(() => {
+        setRefres(!refres);
+      });
 
-      })
-        
-        return toast.success("Delete seller Successfuly");
-    }return 
-  }
+      return toast.success("Delete seller Successfuly");
+    }
+    return;
+  };
   return (
     <div>
       <div className="overflow-x-auto">
@@ -45,7 +48,12 @@ const AllBuyers = () => {
                     <td>{buyer.username}</td>
                     <td>{buyer.email}</td>
                     <td>
-                      <button onClick={()=>handleDelete(buyer?.email)} className="btn btn-error btn-xs">Delete</button>
+                      <button
+                        onClick={() => handleDelete(buyer?.email)}
+                        className="btn btn-error btn-xs"
+                      >
+                        Delete
+                      </button>
                     </td>
                   </tr>
                 );

@@ -5,7 +5,7 @@ import { auth } from "../Config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { format } from 'date-fns'
+import { format } from "date-fns";
 import Sppiner from "../Components/Sppiner";
 const AddCar = () => {
   const [user] = useAuthState(auth);
@@ -15,17 +15,19 @@ const AddCar = () => {
   const { data: categories } = useQuery({
     queryKey: ["category"],
     queryFn: async () => {
-      const data = await axios.get("http://localhost:5000/category");
+      const data = await axios.get(
+        "https://resell-4tq3lnx88-kanon-hosen.vercel.app/category"
+      );
       return data.data;
     },
   });
   useEffect(() => {
-    fetch(`http://localhost:5000/user/${user?.email}`)
-      .then(res => res.json())
-      .then(data => {
-      setUser(data)
-    })
-  },[user?.email])
+    fetch(`https://resell-4tq3lnx88-kanon-hosen.vercel.app/user/${user?.email}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setUser(data);
+      });
+  }, [user?.email]);
   const url =
     "https://api.imgbb.com/1/upload?key=ff2b48e99f3ed8f260b16b42b028c8f5";
   const handleAddCar = async (e) => {
@@ -42,8 +44,7 @@ const AddCar = () => {
     const image = e.target.image.files[0];
     const description = e.target.description.value;
     const email = e.target.email.value;
-    const date = format(new Date(), 'dd/mm/yyyy');
-
+    const date = format(new Date(), "dd/mm/yyyy");
 
     const formData = new FormData();
     formData.append("image", image);
@@ -59,7 +60,7 @@ const AddCar = () => {
           carName,
           email,
           name: user?.displayName,
-          userImg:user?.photoURL,
+          userImg: user?.photoURL,
           reSellPrice,
           condition,
           category,
@@ -69,17 +70,20 @@ const AddCar = () => {
           price,
           image: data.data.display_url,
           description,
-          verify:mainUser?.verify,
+          verify: mainUser?.verify,
         };
 
-        fetch(`http://localhost:5000/allcar?email=${user?.email}`, {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-            authorization: `Bearer ${localStorage.getItem('Token')}`
-          },
-          body: JSON.stringify(carDetails),
-        })
+        fetch(
+          `https://resell-4tq3lnx88-kanon-hosen.vercel.app/allcar?email=${user?.email}`,
+          {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+              authorization: `Bearer ${localStorage.getItem("Token")}`,
+            },
+            body: JSON.stringify(carDetails),
+          }
+        )
           .then((res) => res.json())
           .then((data) => {
             toast.success("Add car successfully");
@@ -89,7 +93,7 @@ const AddCar = () => {
       });
   };
   if (loading) {
-    return <Sppiner></Sppiner>
+    return <Sppiner></Sppiner>;
   }
   return (
     <div>

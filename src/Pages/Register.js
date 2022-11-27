@@ -8,7 +8,7 @@ import React, { useState } from "react";
 import { BsGoogle } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../Config/Firebase";
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
 const Register = () => {
   document.title = "Register";
   const url =
@@ -27,7 +27,7 @@ const Register = () => {
     const formData = new FormData();
     formData.append("image", image);
     const password = e.target.password.value;
-      const user = { username: name, email, accountType: acocunt };
+    const user = { username: name, email, accountType: acocunt };
     fetch(url, {
       method: "post",
       body: formData,
@@ -43,7 +43,7 @@ const Register = () => {
             }).then(() => {
               e.target.reset();
               setLoading(false);
-              fetch("http://localhost:5000/users", {
+              fetch("https://resell-4tq3lnx88-kanon-hosen.vercel.app/users", {
                 method: "POST",
                 headers: {
                   "content-type": "application/json",
@@ -51,9 +51,8 @@ const Register = () => {
                 body: JSON.stringify(user),
               }).then(() => {
                 navigate("/");
-                toast.success('Register Successfully');
+                toast.success("Register Successfully");
               });
-         
             });
           })
           .catch((err) => {
@@ -68,10 +67,13 @@ const Register = () => {
   // google::::::::::::::::::::
   const hanedleGoogle = () => {
     const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider)
-      .then((currentUser) => {
-      const user = { name: currentUser?.user?.displayName, email: currentUser?.user?.email, accountType: "Buyer" };
-      fetch("http://localhost:5000/users", {
+    signInWithPopup(auth, provider).then((currentUser) => {
+      const user = {
+        name: currentUser?.user?.displayName,
+        email: currentUser?.user?.email,
+        accountType: "Buyer",
+      };
+      fetch("https://resell-4tq3lnx88-kanon-hosen.vercel.app/users", {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -79,9 +81,8 @@ const Register = () => {
         body: JSON.stringify(user),
       }).then(() => {
         navigate("/");
-        toast.success('Register Successfully');
+        toast.success("Register Successfully");
       });
-
     });
   };
   return (
@@ -148,12 +149,16 @@ const Register = () => {
               <label className="label">
                 <span className="label-text">Select account type</span>
               </label>
-              <select required name="account" className="select select-bordered">
+              <select
+                required
+                name="account"
+                className="select select-bordered"
+              >
                 <option disabled selected>
                   Pick one
                 </option>
-                <option value='Buyer'>Buyer</option>
-                <option value='Seller'>Seller</option>
+                <option value="Buyer">Buyer</option>
+                <option value="Seller">Seller</option>
               </select>
             </div>
             <p>{error}</p>

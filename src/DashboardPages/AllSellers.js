@@ -7,7 +7,7 @@ const AllSellers = () => {
   const [sellers, setSellers] = useState([]);
   const [refres, setRefres] = useState(false);
   useEffect(() => {
-    fetch("http://localhost:5000/users")
+    fetch("https://resell-4tq3lnx88-kanon-hosen.vercel.app/users")
       .then((res) => res.json())
       .then((data) => {
         setSellers(data);
@@ -15,39 +15,48 @@ const AllSellers = () => {
   }, [refres]);
 
   const handleVerify = (seller) => {
-    fetch(`http://localhost:5000/users/${seller?._id}`, {
-      method: "PUT",
-      headers: {
-        "content-type":"application/json"
-      },
-    })
-    .then((res) => res.json())
-    .then((data) => {
-      fetch(`http://localhost:5000/mycar?email=${seller?.email}`, {
+    fetch(
+      `https://resell-4tq3lnx88-kanon-hosen.vercel.app/users/${seller?._id}`,
+      {
         method: "PUT",
         headers: {
-          "content-type":"application/json",
-        }
-      }).then(res => res.json())
-        .then(() => {
-          setRefres(!refres)
-      })
-     
-    });
-  }
+          "content-type": "application/json",
+        },
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        fetch(
+          `https://resell-4tq3lnx88-kanon-hosen.vercel.app/mycar?email=${seller?.email}`,
+          {
+            method: "PUT",
+            headers: {
+              "content-type": "application/json",
+            },
+          }
+        )
+          .then((res) => res.json())
+          .then(() => {
+            setRefres(!refres);
+          });
+      });
+  };
   const handleDelete = (email) => {
     const procced = window.confirm("Delete seller");
     if (procced) {
-      fetch(`http://localhost:5000/user?email=${email}`, {
-        method:"delete"
-      }).then(() => {
-        setRefres(!refres)
+      fetch(
+        `https://resell-4tq3lnx88-kanon-hosen.vercel.app/user?email=${email}`,
+        {
+          method: "delete",
+        }
+      ).then(() => {
+        setRefres(!refres);
+      });
 
-      })
-        
-        return toast.success("Delete seller Successfuly");
-    }return 
-  }
+      return toast.success("Delete seller Successfuly");
+    }
+    return;
+  };
   return (
     <div>
       <div className="overflow-x-auto">
@@ -73,20 +82,27 @@ const AllSellers = () => {
                       {seller?.status ? (
                         <p className="btn btn-xs btn-primary">Verifyed</p>
                       ) : (
-                          <div>
-                            {
-                              seller?.verify ? <p className="text-green-500">Verified</p> :<p
-                              onClick={()=>handleVerify(seller)}
+                        <div>
+                          {seller?.verify ? (
+                            <p className="text-green-500">Verified</p>
+                          ) : (
+                            <p
+                              onClick={() => handleVerify(seller)}
                               className="btn btn-xs btn-primary"
                             >
                               Verify
                             </p>
-                            }
+                          )}
                         </div>
                       )}
                     </td>
                     <td>
-                      <button onClick={()=>handleDelete(seller?.email)} className="btn btn-error btn-xs">Delete</button>
+                      <button
+                        onClick={() => handleDelete(seller?.email)}
+                        className="btn btn-error btn-xs"
+                      >
+                        Delete
+                      </button>
                     </td>
                   </tr>
                 );

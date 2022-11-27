@@ -10,27 +10,33 @@ import Sppiner from "../Components/Sppiner";
 import { auth } from "../Config/Firebase";
 
 const Category = () => {
-    const { name } = useParams();
-    const [user]= useAuthState(auth)
+  const { name } = useParams();
+  const [user] = useAuthState(auth);
   const [carDetails, setCarDetails] = useState(null);
   const [mainUser, setUser] = useState({});
-  const { data: carCta, isFetching , isLoading} = useQuery({
+  const {
+    data: carCta,
+    isFetching,
+    isLoading,
+  } = useQuery({
     queryKey: ["category"],
     queryFn: async () => {
-      const res = await fetch(`http://localhost:5000/category/${name}`);
+      const res = await fetch(
+        `https://resell-4tq3lnx88-kanon-hosen.vercel.app/category/${name}`
+      );
       const data = res.json();
       return data;
     },
   });
-  console.log("🚀 ~ file: Category.js ~ line 24 ~ Category ~ carCta", carCta)
+  console.log("🚀 ~ file: Category.js ~ line 24 ~ Category ~ carCta", carCta);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/user/${user?.email}`)
-      .then(res => res.json())
-      .then(data => {
-      setUser(data)
-    })
-  },[user?.email])
+    fetch(`https://resell-4tq3lnx88-kanon-hosen.vercel.app/user/${user?.email}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setUser(data);
+      });
+  }, [user?.email]);
   if (isFetching || isLoading) {
     return <Sppiner></Sppiner>;
   }
@@ -41,59 +47,70 @@ const Category = () => {
       </div>
     );
   }
-  
 
-    // ? Bookin handle:::::::::::::::::::::::::::::
-    const handleBooking = (e) => {
-        e.preventDefault();
-        const buyerEmail = user?.email;
-        const buyerPic = user?.photoURL;
-        const sellerEmail = carDetails.email;
-        const buyerName = user?.displayName;
-        const sellerName = carDetails?.name;
-        const sellerPic = carDetails?.userImg;
-        const sellerNumber = carDetails?.phone;
-        const price = carDetails?.reSellPrice;
-        const meetingLocation = e.target.meetingLocation.value;
-        const buyerPhone = e.target.phoneNumber.value;
-        const carName = carDetails.carName;
-        const carImage = carDetails.image;
-        
+  // ? Bookin handle:::::::::::::::::::::::::::::
+  const handleBooking = (e) => {
+    e.preventDefault();
+    const buyerEmail = user?.email;
+    const buyerPic = user?.photoURL;
+    const sellerEmail = carDetails.email;
+    const buyerName = user?.displayName;
+    const sellerName = carDetails?.name;
+    const sellerPic = carDetails?.userImg;
+    const sellerNumber = carDetails?.phone;
+    const price = carDetails?.reSellPrice;
+    const meetingLocation = e.target.meetingLocation.value;
+    const buyerPhone = e.target.phoneNumber.value;
+    const carName = carDetails.carName;
+    const carImage = carDetails.image;
 
-      const bookDetails = { buyerEmail, buyerPic, buyerPhone, buyerName, sellerName, sellerEmail, sellerPic, sellerNumber, price, meetingLocation, carName, carImage };
+    const bookDetails = {
+      buyerEmail,
+      buyerPic,
+      buyerPhone,
+      buyerName,
+      sellerName,
+      sellerEmail,
+      sellerPic,
+      sellerNumber,
+      price,
+      meetingLocation,
+      carName,
+      carImage,
+    };
 
-        fetch(`http://localhost:5000/booknow?name=${user?.displayName}&email=${user?.email}`, {
-            method: "POST",
-            headers: {
-              "content-type": "application/json",
-            authorization: `Bearer ${localStorage.getItem('Token')}`
-              
-            },
-            body:JSON.stringify(bookDetails)
-        }).then((res) => {
-          res.json();
-        }).then(data => {
-          toast.success("Book Successfully");
-          setCarDetails(null)
-        })
+    fetch(
+      `https://resell-4tq3lnx88-kanon-hosen.vercel.app/booknow?name=${user?.displayName}&email=${user?.email}`,
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("Token")}`,
+        },
+        body: JSON.stringify(bookDetails),
+      }
+    )
+      .then((res) => {
+        res.json();
+      })
+      .then((data) => {
+        toast.success("Book Successfully");
+        setCarDetails(null);
+      });
+  };
 
-
-  }
-  
   //Report user::::::::::::::::::::::::::
   const handleReport = () => {
-    fetch(`http://localhost:5000/report`, {
+    fetch(`https://resell-4tq3lnx88-kanon-hosen.vercel.app/report`, {
       method: "post",
       headers: {
-        "content-type":'application/json'
+        "content-type": "application/json",
       },
-      body:JSON.stringify(carDetails),
-    }).then(res => res.json())
-      .then(() => {
-      
+      body: JSON.stringify(carDetails),
     })
-
-  }
+      .then((res) => res.json())
+      .then(() => {});
+  };
   return (
     <div className="md:px-16 px-8 my-6 h-full">
       <h1 className="text-3xl font-semibold text-slate-800">{name}</h1>
@@ -116,19 +133,23 @@ const Category = () => {
                 />
                 <div className="flex items-center w-full justify-between">
                   <div className="flex items-center gap-1">
-                  <p className="font-semibold ">{car.name}</p>
-                  {
-                    car?.verify &&  <BsFillPatchCheckFill
-                    title="Verifyed Seller"
-                    className="text-blue-500 font-bold text-base"
-                  ></BsFillPatchCheckFill>
-                  }
+                    <p className="font-semibold ">{car.name}</p>
+                    {car?.verify && (
+                      <BsFillPatchCheckFill
+                        title="Verifyed Seller"
+                        className="text-blue-500 font-bold text-base"
+                      ></BsFillPatchCheckFill>
+                    )}
+                  </div>
+                  <label
+                    htmlFor="report-modal"
+                    onClick={() => setCarDetails(car)}
+                    title="Report car"
+                    className=" hover:bg-blue-400 hover:text-white text-xl cursor-pointer p-3 bg-gray-200 rounded-full "
+                  >
+                    <FiFlag></FiFlag>
+                  </label>
                 </div>
-                  <label  htmlFor="report-modal" onClick={()=>setCarDetails(car)} title="Report car" className=" hover:bg-blue-400 hover:text-white text-xl cursor-pointer p-3 bg-gray-200 rounded-full ">
-              <FiFlag></FiFlag>
-            </label>
-                </div>
-
               </div>
               <p className="text-blue-500 text-sm font-semibold">
                 {car.category}
@@ -162,9 +183,7 @@ const Category = () => {
             >
               Book Now
             </label>
-            
           </div>
-          
         ))}
         {carDetails && (
           <div>
@@ -178,33 +197,73 @@ const Category = () => {
                   ✕
                 </label>
                 <h3 className="text-lg font-bold">{carDetails.carName}</h3>
-                              <form onSubmit={handleBooking} className="flex flex-col gap-3">
-                                  <label htmlFor="Carname">Car Name</label>
-                                  <input type="text" value={carDetails.carName} disabled className="input input-bordered input-primary" />
-                                  <label htmlFor="carprice">Car Price</label>
-                                  <input type="text" value={carDetails.reSellPrice} disabled className="input input-bordered input-primary" />
-                                  <label htmlFor="email">Email</label>
-                                  <input type="email" value={user?.email} disabled className="input input-bordered input-primary" />
-                                  <label htmlFor="email">Phone number</label>
-                                  <input name="phoneNumber" type="text" placeholder="Enter your number" required className="input input-bordered input-primary" />
-                                  <label htmlFor="meeting">Meeting Location/Skype Id</label>
-                                  <input name="meetingLocation" type="text" placeholder="Where you want meet with seller?" required className="input input-bordered input-primary" />
-                                  <button className="px-5 py-3 bg-blue-400 shadow-md text-white font-semibold shadow-blue-500 rounded-tr-3xl rounded-bl-3xl hover:-translate-y-1 transition-transform border-none mt-2">Book Now</button>
+                <form onSubmit={handleBooking} className="flex flex-col gap-3">
+                  <label htmlFor="Carname">Car Name</label>
+                  <input
+                    type="text"
+                    value={carDetails.carName}
+                    disabled
+                    className="input input-bordered input-primary"
+                  />
+                  <label htmlFor="carprice">Car Price</label>
+                  <input
+                    type="text"
+                    value={carDetails.reSellPrice}
+                    disabled
+                    className="input input-bordered input-primary"
+                  />
+                  <label htmlFor="email">Email</label>
+                  <input
+                    type="email"
+                    value={user?.email}
+                    disabled
+                    className="input input-bordered input-primary"
+                  />
+                  <label htmlFor="email">Phone number</label>
+                  <input
+                    name="phoneNumber"
+                    type="text"
+                    placeholder="Enter your number"
+                    required
+                    className="input input-bordered input-primary"
+                  />
+                  <label htmlFor="meeting">Meeting Location/Skype Id</label>
+                  <input
+                    name="meetingLocation"
+                    type="text"
+                    placeholder="Where you want meet with seller?"
+                    required
+                    className="input input-bordered input-primary"
+                  />
+                  <button className="px-5 py-3 bg-blue-400 shadow-md text-white font-semibold shadow-blue-500 rounded-tr-3xl rounded-bl-3xl hover:-translate-y-1 transition-transform border-none mt-2">
+                    Book Now
+                  </button>
                 </form>
               </div>
             </div>
           </div>
         )}
-                        <input type="checkbox" id="report-modal" className="modal-toggle" />
-<div className="modal">
-  <div className="modal-box relative">
-    <label htmlFor="report-modal" className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+        <input type="checkbox" id="report-modal" className="modal-toggle" />
+        <div className="modal">
+          <div className="modal-box relative">
+            <label
+              htmlFor="report-modal"
+              className="btn btn-sm btn-circle absolute right-2 top-2"
+            >
+              ✕
+            </label>
             <h3 className="text-lg font-bold">Report this car!</h3>
             <div className="modal-action">
-            <label onClick={handleReport} htmlFor="report-modal" className="btn">Report</label>
-    </div>
-  </div>
-</div>
+              <label
+                onClick={handleReport}
+                htmlFor="report-modal"
+                className="btn"
+              >
+                Report
+              </label>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

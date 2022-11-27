@@ -19,6 +19,7 @@ import AllSellers from '../DashboardPages/AllSellers';
 import Report from '../DashboardPages/Report';
 import DashboardDefault from '../DashComponents/DashboardDefault';
 import Payment from '../DashboardPages/Payment';
+import Error from '../Pages/Error';
 const MainRoutes = () => {
     const router = createBrowserRouter([
         {
@@ -96,6 +97,10 @@ const MainRoutes = () => {
                     element:<PrivateRoute><Category></Category></PrivateRoute>
                 }
             ]
+        },
+        {
+            path: '*',
+            element:<Error></Error>
         }
     ])
 

@@ -12,7 +12,7 @@ const DashboardLayout = () => {
     }
     return (
         <div className='flex md:justify-between'>
-            <div className='w-1/5 h-screen'>
+            <div className='md:w-1/5 w-1/3 h-screen'>
             <Sidebar></Sidebar>
             </div>
             <div className='w-4/5 md:my-10 my-3 md:mx-16 ml-3'>

@@ -7,3 +7,6 @@
 <li>Payment for stripe</li>
 <li>Data security for JWT</li>
 <li>Styling for Tailwind CSS and Daisy Ui</li>
+
+<p>Admin email : kanon@gmail.com</p>
+<p>Admin pass : 123456</p>
